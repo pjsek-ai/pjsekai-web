@@ -1,6 +1,6 @@
 {
   "name": "pjsekai-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,14 +8,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.21.0",
     "chart.js": "^2.9.4",
     "google-palette": "^1.1.0",
+    "material-ui": "^0.20.2",
     "moment": "^2.29.1",
     "next": "10.0.0",
     "react": "17.0.1",
+    "react-audio-player": "^0.14.0",
     "react-chartjs-2": "^2.10.0",
     "react-dom": "17.0.1",
+    "react-lazy-load-image-component": "^1.5.0",
+    "react-viewer": "^3.2.2",
     "recharts": "^1.8.5",
     "swr": "^0.3.8"
   }

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Link from 'next/link'
+import Link from 'next/link';
 import axios from 'axios';
 import moment from 'moment';
 import { useRouter } from 'next/router';
@@ -45,11 +45,11 @@ export default function Event({ domain, events }) {
         <b>{event.name}</b>
         <p>{moment(event.startAt).format('YYYY-MM-DD HH:mm')} --- {moment(event.aggregateAt).format('YYYY-MM-DD HH:mm')}</p>
       </div>
-      <Link href={{
+      {/* <Link href={{
         pathname: '/events/[id]/chart', query: { id: event.id }
       }}>
         <a>Score Chart</a>
-      </Link>
+      </Link> */}
     </div>
   );
 }
