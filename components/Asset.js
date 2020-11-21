@@ -5,6 +5,7 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactAudioPlayer from 'react-audio-player';
 import useSWR from 'swr';
+import Typography from '@material-ui/core/Typography';
 // import dynamic from 'next/dynamic'
 
 // const Viewer = dynamic(
@@ -43,17 +44,16 @@ const Asset = ({ info, assetBaseUrl }) => {
         onClose={() => { setViewingImage(false); }}
         images={[{ src: url }]}
       /> */}
-    </div>
+    </div>;
   }
   else if (info.path.endsWith('.flac')) {
     return <ReactAudioPlayer
       src={url}
       controls
       volume={0.2}
-    />
+    />;
   }
   else if (!info.path.includes('.')) {
-    console.log(data)
     return <div>
       <code style={{
         display: 'block',
@@ -61,8 +61,9 @@ const Asset = ({ info, assetBaseUrl }) => {
       }}>
         {data}
       </code>
-    </div >
+    </div >;
   }
+  return <div><Typography>Cannot display this file</Typography></div>;
 }
 
 export default Asset;
