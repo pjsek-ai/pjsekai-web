@@ -9,7 +9,7 @@ const getRequest = url => axios.get(url).then(r => r.data);
 const TreeNode = ({ node, loadChildren, apiDomain, onClick }) => {
   const [expanded, setExpanded] = useState(false);
   const { data, error } = useSWR(
-    loadChildren && node.isDir ? `https://${apiDomain}/assets?parent=${node.path}&$limit=200` : null,
+    loadChildren && node.isDir ? `https://${apiDomain}/assets?parent=${node.path}&$limit=1000` : null,
     getRequest,
   );
   return <TreeItem

@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import TreeNode from '../components/TreeNode';
 import Asset from '../components/Asset';
@@ -71,7 +72,7 @@ const getRequest = url => axios.get(url).then(r => r.data);
 export async function getServerSideProps(context) {
   const apiDomain = 'api.pjsek.ai';
   const assetBaseUrl = 'https://assets.pjsek.ai/file/pjsekai-assets';
-  const rootItems = await getRequest(`https://${apiDomain}/assets?parent=&$limit=200`);
+  const rootItems = await getRequest(`https://${apiDomain}/assets?parent=&$limit=1000`);
 
   return {
     props: {
@@ -138,10 +139,17 @@ export default function Events({ assetBaseUrl, apiDomain, rootItems }) {
             {currentFile && currentFile.path}
           </Typography>
           {currentFile &&
+            <CopyToClipboard text={`${assetBaseUrl}/${currentFile.path}`}>
+              <Button color='inherit'>
+                Copy URL
+                            </Button>
+            </CopyToClipboard>
+          }
+          {currentFile &&
             <Button color='inherit'>
               <a href={`${assetBaseUrl}/${currentFile.path}`} target='_blank' download>
                 Download
-              </a>
+                            </a>
             </Button>
           }
         </Toolbar>
