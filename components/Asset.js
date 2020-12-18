@@ -3,15 +3,27 @@ import axios from 'axios';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ReactAudioPlayer from 'react-audio-player';
+import ReactPlayer from 'react-player';
 import useSWR from 'swr';
 import Typography from '@material-ui/core/Typography';
-// import dynamic from 'next/dynamic'
+
+
+import dynamic from 'next/dynamic';
+
+const ReactJson = dynamic(
+  () => import('react-json-view'),
+  { ssr: false }
+);
+
+// const { OBJModel } = dynamic(
+//   () => import('react-3d-viewer'),
+//   { ssr: false }
+// );
 
 // const Viewer = dynamic(
 //   () => import('react-viewer'),
 //   { ssr: false }
-// )
+// );
 
 const getRequest = url => axios.get(url).then(r => r.data);
 
@@ -19,7 +31,7 @@ const Asset = ({ info, assetBaseUrl }) => {
 
   const url = `${assetBaseUrl}/${info.path}`;
   const { data, error } = useSWR(
-    !info.path.includes('.') ? url : null,
+    info.path.endsWith('.json') || !info.path.includes('.') ? url : null,
     getRequest,
   );
   const [viewingImage, setViewingImage] = useState(false);
@@ -46,12 +58,33 @@ const Asset = ({ info, assetBaseUrl }) => {
       /> */}
     </div>;
   }
-  else if (info.path.endsWith('.flac')) {
-    return <ReactAudioPlayer
-      src={url}
+  else if (info.path.endsWith('.flac') || info.path.endsWith('.ogg')) {
+    return <ReactPlayer
+      url={url}
       controls
       volume={0.2}
+      height='100%'
+      width='100%'
     />;
+  }
+  else if (info.path.endsWith('.mp4')) {
+    return <ReactPlayer
+      url={url}
+      controls
+      volume={0.2}
+      height='100%'
+      width='100%'
+      pip={true}
+      stopOnUnmount={false}
+    />;
+  }
+  else if (info.path.endsWith('.json')) {
+    return <ReactJson src={data} name={false} />;
+  }
+  else if (info.path.endsWith('.obj')) {
+    // return <OBJModel
+    //   src={url}
+    // />;
   }
   else if (!info.path.includes('.')) {
     return <div>
