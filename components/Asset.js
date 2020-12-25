@@ -3,6 +3,7 @@ import axios from 'axios';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactAudioPlayer from 'react-audio-player';
 import ReactPlayer from 'react-player';
 import useSWR from 'swr';
 import Typography from '@material-ui/core/Typography';
@@ -59,19 +60,21 @@ const Asset = ({ info, assetBaseUrl }) => {
     </div>;
   }
   else if (info.path.endsWith('.flac') || info.path.endsWith('.ogg')) {
-    return <ReactPlayer
-      url={url}
+    return <ReactAudioPlayer
+      style={{
+        height: '100%',
+        width: '100%',
+      }}
+      src={url}
       controls
       volume={0.2}
-      height='100%'
-      width='100%'
     />;
   }
   else if (info.path.endsWith('.mp4')) {
     return <ReactPlayer
       url={url}
       controls
-      volume={0.2}
+      // volume={0.2}
       height='100%'
       width='100%'
       pip={true}
