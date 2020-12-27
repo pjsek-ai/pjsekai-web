@@ -1,33 +1,56 @@
 {
   "name": "pjsekai-web",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "axios": "^0.21.0",
-    "chart.js": "^2.9.4",
-    "google-palette": "^1.1.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.1",
     "material-ui": "^0.20.2",
     "moment": "^2.29.1",
-    "next": "10.0.0",
-    "react": "17.0.1",
+    "react": "^17.0.1",
     "react-3d-viewer": "^1.0.12",
     "react-audio-player": "^0.14.0",
-    "react-chartjs-2": "^2.10.0",
     "react-copy-to-clipboard": "^5.0.2",
-    "react-dom": "17.0.1",
+    "react-dom": "^17.0.1",
+    "react-i18next": "^11.8.4",
+    "react-infinite-scroller": "^1.2.4",
     "react-json-view": "^1.19.1",
-    "react-lazy-load-image-component": "^1.5.0",
+    "react-lazy-load-image-component": "^1.5.1",
     "react-player": "^2.7.2",
-    "react-viewer": "^3.2.2",
-    "recharts": "^1.8.5",
-    "swr": "^0.3.8"
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "react-slick": "^0.27.13",
+    "slick-carousel": "^1.8.1",
+    "swr": "^0.3.11",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
