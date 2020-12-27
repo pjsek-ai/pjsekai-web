@@ -17,7 +17,7 @@ function Home() {
   const { data: banners } = useSWR(`${Contants.API_BASE_URL}database/user/userHomeBanners?startAt[$lte]=${now}&endAt[$gte]=${now}&$sort[seq]=1`);
 
   return <div>
-    <div style={{ width: 400, paddingBottom: 32 }}>
+    <div style={{ maxWidth: 488, width: '90vw', paddingBottom: 32 }}>
       <Slider
         autoplay={true}
         adaptiveHeight={true}
