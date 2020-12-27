@@ -10,12 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import ReactJson from 'react-json-view';
 import { OBJModel } from 'react-3d-viewer';
 // import Viewer from 'react-viewer';
+import Contants from '../constants';
 
 const getRequest = url => axios.get(url).then(r => r.data);
 
 const Asset = ({ asset }) => {
 
-  const url = `https://assets.pjsek.ai/file/pjsekai-assets/${asset.path}`;
+  const url = `${Contants.ASSET_BASE_URL}${asset.path}`;
   const { data, error } = useSWR(
     asset.path.endsWith('.json') || !asset.path.includes('.') ? url : null,
     getRequest,

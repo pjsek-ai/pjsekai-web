@@ -11,7 +11,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import AudiotrackIcon from '@material-ui/icons/Audiotrack';
 import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
 import DescriptionIcon from '@material-ui/icons/Description';
-import WidgetsIcon from '@material-ui/icons/Widgets';
+import CategoryIcon from '@material-ui/icons/Category';
 import moment from 'moment';
 
 function AssetDirectory({ data, selectedPath, onSelect, onEnter }) {
@@ -48,7 +48,7 @@ function AssetDirectory({ data, selectedPath, onSelect, onEnter }) {
               icon = <DescriptionIcon />;
             }
             else if (row.path.endsWith('.obj')) {
-              icon = <WidgetsIcon />;
+              icon = <CategoryIcon />;
             }
             else if (!row.path.includes('.')) {
               icon = <DescriptionIcon />;

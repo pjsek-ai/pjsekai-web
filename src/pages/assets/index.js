@@ -8,13 +8,13 @@ import useSWR, { SWRConfig } from 'swr';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-
+import Contants from '../../constants';
 
 function Assets() {
   const location = useLocation();
   const history = useHistory();
   const assetPath = location.pathname.split('/').filter((x, i) => i > 1 && x).join('/');
-  const { data: assetNode } = useSWR(`https://api.pjsek.ai/assets?path=${assetPath}`);
+  const { data: assetNode } = useSWR(`${Contants.API_BASE_URL}assets?path=${assetPath}`);
 
   const [selectedPath, setSelectedPath] = useState(assetPath);
   useEffect(() => {
@@ -23,7 +23,7 @@ function Assets() {
 
   const directoryPath = assetNode && assetNode.data[0] && assetPath && !assetNode.data[0].isDir ? assetNode.data[0].parent : assetPath;
 
-  const { data: directoryData } = useSWR(assetNode && (!assetPath || assetNode.data[0]) ? `https://api.pjsek.ai/assets?parent=${directoryPath}&$limit=1000&$sort[isDir]=-1&$sort[path]=1` : null);
+  const { data: directoryData } = useSWR(assetNode && (!assetPath || assetNode.data[0]) ? `${Contants.API_BASE_URL}assets?parent=${directoryPath}&$limit=1000&$sort[isDir]=-1&$sort[path]=1` : null);
 
   let bottomComponent = <div />;
   if (assetNode) {
@@ -57,13 +57,13 @@ function Assets() {
 
   let buttonComponent = assetNode && assetNode.data[0] && !assetNode.data[0].isDir ?
     <Grid container direction="row">
-      <CopyToClipboard text={`https://assets.pjsek.ai/file/pjsekai-assets/${assetPath}`}>
+      <CopyToClipboard text={`${Contants.ASSET_BASE_URL}${assetPath}`}>
         <Button variant="contained" color="primary">
           Copy asset URL
       </Button>
       </CopyToClipboard>
       <div style={{ paddingLeft: 8 }}>
-        <Button variant="contained" color="primary" href={`https://assets.pjsek.ai/file/pjsekai-assets/${assetPath}`} target='_blank' download>
+        <Button variant="contained" color="primary" href={`${Contants.ASSET_BASE_URL}${assetPath}`} target='_blank' download>
           Download
       </Button>
       </div>

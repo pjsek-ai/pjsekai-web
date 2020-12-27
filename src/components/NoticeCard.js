@@ -1,53 +1,91 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/opacity.css';
+import moment from 'moment';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
+import Contants from '../constants';
 
-function MediaCard() {
-  const classes = useStyles();
+const icons = {
+  bug: "icon_failure.png",
+  campaign: "icon_campaign.png",
+  event: "icon_event.png",
+  gacha: "icon_gacha.png",
+  information: "icon_notice.png",
+  music: "icon_song.png",
+  update: "icon_update.png",
+};
+
+function NoticeCard({ notice, onNoticeClick }) {
 
   return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
+    <Card style={{ margin: 16 }}>
+      <CardActionArea onClick={() => onNoticeClick(notice)}>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-          </Typography>
+          <Grid
+            style={{ paddingLeft: 16, paddingRight: 16 }}
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="stretch"
+            spacing={2}
+          >
+            {notice.bannerAssetbundleName &&
+              <Grid item xs={3}>
+                <LazyLoadImage
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    objectFit: 'contain',
+                  }}
+                  src={`${Contants.OFFICIAL_NOTICE_BASE_URL}images/information/${notice.bannerAssetbundleName}.png`}
+                  effect='opacity'
+                />
+              </Grid>
+            }
+            <Grid item xs={notice.bannerAssetbundleName ? 9 : 12} container
+              direction="column"
+              justify="space-between"
+              alignItems="stretch"
+            >
+              <Grid item>
+                <Typography variant="h6">
+                  {notice.title}
+                </Typography>
+              </Grid>
+              <Grid item container
+                direction="row"
+                justify="flex-end"
+                alignItems="center"
+                spacing={2}
+              >
+                <Grid item>
+                  <Typography align='right' variant="h6">
+                    {moment(notice.startAt).format('Y/MM/DD HH:mm')}
+                  </Typography>
+                </Grid>
+                <Grid item xs={notice.bannerAssetbundleName ? 4 : 3}>
+                  <LazyLoadImage
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      objectFit: 'contain',
+                    }}
+                    src={`/notices/${icons[notice.informationTag]}`}
+                    effect='opacity'
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
     </Card>
   );
 }
 
-export default MediaCard;
+export default NoticeCard;
