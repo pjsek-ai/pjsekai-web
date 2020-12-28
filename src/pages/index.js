@@ -36,6 +36,7 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 import Home from "./home";
 import Notices from "./notices";
+import Events from "./events";
 import Assets from "./assets";
 import NotFound from "./notFound";
 import UnderConstruction from "./underConstruction";
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
   },
 }));
 
@@ -109,8 +110,7 @@ function Index({ window }) {
           <ListItemText primary='Notices' />
         </ListItem>
         <ListItem button component={Link} to='/events'>
-          {/* <ListItemIcon><DateRangeIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
+          <ListItemIcon><DateRangeIcon /></ListItemIcon>
           <ListItemText primary='Events' />
         </ListItem>
         <ListItem button component={Link} to='/songs'>
@@ -223,6 +223,9 @@ function Index({ window }) {
                 <Notices />
               </Route>
               <Route path='/events'>
+                <Events />
+              </Route>
+              <Route path='/event-charts'>
                 <UnderConstruction />
               </Route>
               <Route path='/songs'>

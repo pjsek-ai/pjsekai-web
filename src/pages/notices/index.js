@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWR from "swr";
 
@@ -63,7 +64,13 @@ function Notices() {
               };
             }, false)}
             hasMore={data.skip + data.limit < data.total}
-            loader={<div key={0}>Loading...</div>}
+            loader={
+              <div key={0}>
+                <Typography align='center'>
+                  Loading...
+                </Typography>
+              </div>
+            }
           >
             {data.data.map(entry => {
               return (

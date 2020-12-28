@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "material-ui": "^0.20.2",
     "moment": "^2.29.1",
+    "nuka-carousel": "^4.7.4",
     "react": "^17.0.1",
     "react-3d-viewer": "^1.0.12",
     "react-audio-player": "^0.14.0",

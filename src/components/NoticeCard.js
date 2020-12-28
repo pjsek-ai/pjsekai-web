@@ -35,7 +35,7 @@ function NoticeCard({ notice, onNoticeClick }) {
             spacing={2}
           >
             {notice.bannerAssetbundleName &&
-              <Grid item xs={3}>
+              <Grid item sm={3} xs={12}>
                 <LazyLoadImage
                   style={{
                     height: '100%',
@@ -47,7 +47,7 @@ function NoticeCard({ notice, onNoticeClick }) {
                 />
               </Grid>
             }
-            <Grid item xs={notice.bannerAssetbundleName ? 9 : 12} container
+            <Grid item sm={notice.bannerAssetbundleName ? 9 : 12} xs={12} container
               direction="column"
               justify="space-between"
               alignItems="stretch"
@@ -64,11 +64,11 @@ function NoticeCard({ notice, onNoticeClick }) {
                 spacing={2}
               >
                 <Grid item>
-                  <Typography align='right' variant="h6">
+                  <Typography align='right' variant="subtitle2">
                     {moment(notice.startAt).format('Y/MM/DD HH:mm')}
                   </Typography>
                 </Grid>
-                <Grid item xs={notice.bannerAssetbundleName ? 4 : 3}>
+                <Grid item sm={notice.bannerAssetbundleName ? 4 : 3} xs={4}>
                   <LazyLoadImage
                     style={{
                       height: '100%',

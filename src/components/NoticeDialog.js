@@ -27,7 +27,7 @@ function NoticeDialog({ notice, onClose, open }) {
   return (
     <Dialog maxWidth={false} fullWidth onClose={onClose} open={open}>
       <DialogTitle disableTypography>
-        <Typography variant='h4'>
+        <Typography variant='h6'>
           {notice.title}
         </Typography>
         <Grid item container
@@ -37,11 +37,11 @@ function NoticeDialog({ notice, onClose, open }) {
           spacing={2}
         >
           <Grid item>
-            <Typography align='right' variant="h6">
+            <Typography align='right' variant="subtitle2">
               {moment(notice.startAt).format('Y/MM/DD HH:mm')}
             </Typography>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item sm={2} xs={4}>
             <LazyLoadImage
               style={{
                 height: '100%',
