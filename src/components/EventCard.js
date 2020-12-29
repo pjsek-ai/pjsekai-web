@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -13,6 +13,9 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import moment from 'moment';
 import GavelIcon from '@material-ui/icons/Gavel';
+import IconButton from '@material-ui/core/IconButton';
+import PauseIcon from '@material-ui/icons/Pause';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import EventSlides from './EventSlides';
 import Contants from '../constants';
@@ -21,9 +24,51 @@ import Contants from '../constants';
 function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVliveClick }) {
 
   const [open, setOpen] = useState(false);
+  const [audioContext] = useState(new AudioContext());
+  const [playing, setPlaying] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+
+  const bufferSource = audioContext.createBufferSource();
+
+  useEffect(() => {
+    playing ? audioContext.resume() : audioContext.suspend();
+  },
+    [playing]
+  );
+
+  useEffect(() => {
+    fetch(`${Contants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/bgm/${event.assetbundleName}_top.flac`)
+      .then(resp => resp.arrayBuffer())
+      .then(buf => audioContext.decodeAudioData(buf))
+      .then(decoded => {
+        console.log(decoded.length / 44100);
+        bufferSource.buffer = decoded;
+        bufferSource.loop = true;
+        bufferSource.loopStart = 1.25;
+        // 41.972336
+        // 41.981678
+        // 41.971678
+        bufferSource.loopEnd = 41.97086;
+        bufferSource.connect(audioContext.destination);
+        audioContext.suspend();
+        bufferSource.start();
+        setAudioEnabled(true);
+      });
+  }, []);
 
   return (
     <div>
+      <IconButton
+        // style={{
+        //   position: 'absolute',
+        //   left: 16,
+        //   top: 16,
+        // }}
+        disabled={!audioEnabled}
+        onClick={() => setPlaying(!playing)}
+      >
+        {playing ? <PauseIcon /> : <PlayArrowIcon />}
+      </IconButton>
       <Card style={{
         marginBottom: 16,
         backgroundImage: `url(${Contants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/screen/bg/bg.png)`,
@@ -33,6 +78,7 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
       }}>
 
         <CardContent>
+
           <Grid
             container
             direction="row"
