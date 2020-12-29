@@ -12,7 +12,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
@@ -111,8 +110,9 @@ function Assets() {
     </div>;
 
   return (
-    <div>
+    <div style={{ height: 'calc(100vh - 80px)' }}>
       <Grid
+        style={{ height: '100%' }}
         container
         direction="row"
         wrap='nowrap'
@@ -120,7 +120,7 @@ function Assets() {
       >
         {md &&
           <Grid item xs={3} xl={4}>
-            <Paper style={{ padding: 8, paddingTop: 16, height: 'calc(100vh - 80px)', overflow: 'auto' }}>
+            <Paper style={{ padding: 8, paddingTop: 12, overflow: 'auto', height: '100%' }}>
               {directoryCache && <AssetTree
                 cache={directoryCache}
                 expanded={expandedTreeNodes}
@@ -151,22 +151,25 @@ function Assets() {
             </Paper>
           </Grid>}
         <Grid item xs>
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="center"
-            style={{ padding: 8 }}
-          >
-            <AssetBreadcrumbs path={assetPath} />
-            <div>
-              {buttonComponent}
+          <Paper style={{ height: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+                style={{ padding: 8 }}
+              >
+                <AssetBreadcrumbs path={assetPath} />
+                <div>
+                  {buttonComponent}
+                </div>
+              </Grid >
+              {bottomComponent}
             </div>
-          </Grid >
-          {bottomComponent}
+          </Paper>
         </Grid>
       </Grid>
-
     </div >
   );
 

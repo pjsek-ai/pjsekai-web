@@ -22,8 +22,8 @@ function AssetDirectory({ data, selectedPath, onSelect, onEnter }) {
   const lg = useMediaQuery(theme => theme.breakpoints.up('lg'));
 
   return (
-    <TableContainer component={Paper}>
-      <Table size='small'>
+    <TableContainer style={{ flexGrow: 1 }}>
+      <Table stickyHeader size='small'>
         <TableHead>
           <TableRow>
             <TableCell />
