@@ -12,7 +12,7 @@ function NotFound() {
       justify="flex-start"
       alignItems="center"
     >
-      <Typography variant="h4">
+      <Typography variant="h5">
         Oh my! There's nothing here! Are you lost?
       </Typography>
       <LazyLoadImage

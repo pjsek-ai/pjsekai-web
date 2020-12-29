@@ -12,21 +12,25 @@ import AudiotrackIcon from '@material-ui/icons/Audiotrack';
 import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
 import DescriptionIcon from '@material-ui/icons/Description';
 import CategoryIcon from '@material-ui/icons/Category';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import moment from 'moment';
+import filesize from 'filesize';
 
 function AssetDirectory({ data, selectedPath, onSelect, onEnter }) {
 
+  const lg = useMediaQuery(theme => theme.breakpoints.up('lg'));
 
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="children">
+      <Table size='small'>
         <TableHead>
           <TableRow>
             <TableCell />
             <TableCell>Name</TableCell>
-            <TableCell align="right">Date modified</TableCell>
-            <TableCell align="right">Data version modified</TableCell>
-            <TableCell align="right">Size</TableCell>
+            <TableCell align="right">{lg ? 'Date modified' : 'Date'}</TableCell>
+            <TableCell align="right">{lg ? 'Asset version modified' : 'Version'}</TableCell>
+            <TableCell align="right">{lg ? 'File size' : 'Size'}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -68,7 +72,7 @@ function AssetDirectory({ data, selectedPath, onSelect, onEnter }) {
               </TableCell>
               <TableCell align="right">{moment(row.datetime).fromNow()}</TableCell>
               <TableCell align="right">{row.assetVersion}</TableCell>
-              <TableCell align="right">{row.size}</TableCell>
+              <TableCell align="right">{row.size && filesize(row.size, { base: 10 })}</TableCell>
             </TableRow>
           })}
         </TableBody>
