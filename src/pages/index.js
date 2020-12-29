@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -80,7 +80,7 @@ function Index({ window }) {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [darkMode, setDarkMode] = useState(prefersDarkMode);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === null ? prefersDarkMode : localStorage.getItem('darkMode') === 'true');
 
   const theme = useMemo(
     () =>
@@ -91,6 +91,10 @@ function Index({ window }) {
       }),
     [darkMode],
   );
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
