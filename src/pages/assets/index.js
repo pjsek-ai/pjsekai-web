@@ -38,7 +38,9 @@ function Assets() {
 
   const select = node => setSelectedPath(node.path);
   const enter = node => {
-    setExpandedTreeNodes(prevExpandedTreeNodes => [...prevExpandedTreeNodes, node.path]);
+    if (node.isDir) {
+      setExpandedTreeNodes(prevExpandedTreeNodes => [...prevExpandedTreeNodes, node.path]);
+    }
     history.push(`/assets/${node.path}`);
   };
 
