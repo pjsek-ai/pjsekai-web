@@ -10,7 +10,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import moment from 'moment';
 
-import Contants from '../constants';
+import Constants from '../constants';
 
 const icons = {
   bug: "icon_failure.png",
@@ -68,7 +68,7 @@ function NoticeDialog({ notice, onClose, open }) {
             title={notice.title}
             width='100%'
             height='100%'
-            src={`${Contants.OFFICIAL_NOTICE_BASE_URL}${notice.path}`}
+            src={`${Constants.OFFICIAL_NOTICE_BASE_URL}${notice.path}`}
           />
         </div>
       </DialogContent>

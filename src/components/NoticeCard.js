@@ -8,7 +8,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import moment from 'moment';
 
-import Contants from '../constants';
+import Constants from '../constants';
 
 const icons = {
   bug: "icon_failure.png",
@@ -42,7 +42,7 @@ function NoticeCard({ notice, onNoticeClick }) {
                     width: '100%',
                     objectFit: 'contain',
                   }}
-                  src={`${Contants.OFFICIAL_NOTICE_BASE_URL}images/information/${notice.bannerAssetbundleName}.png`}
+                  src={`${Constants.OFFICIAL_NOTICE_BASE_URL}images/information/${notice.bannerAssetbundleName}.png`}
                   effect='opacity'
                 />
               </Grid>

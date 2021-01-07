@@ -10,13 +10,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import EventCard from '../../components/EventCard';
 import NotFound from '../notFound';
 import UnderConstruction from '../underConstruction';
-import Contants from '../../constants';
+import Constants from '../../constants';
 
 function SingleEvent() {
   const { eventId } = useParams();
   const { path, url } = useRouteMatch();
   const history = useHistory();
-  const { data } = useSWR(`${Contants.API_BASE_URL}database/master/events?&id=${eventId}`);
+  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/events?&id=${eventId}`);
   return (
     <div>
       <Switch>

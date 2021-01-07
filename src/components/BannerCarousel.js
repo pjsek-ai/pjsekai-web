@@ -5,13 +5,13 @@ import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
 
-import Contants from '../constants';
+import Constants from '../constants';
 
 function BannerCarousel() {
   const [now, setNow] = useState(Date.now());
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { data: banners } = useSWR(`${Contants.API_BASE_URL}database/user/userHomeBanners?startAt[$lte]=${now}&endAt[$gte]=${now}&$sort[seq]=1`);
+  const { data: banners } = useSWR(`${Constants.API_BASE_URL}database/user/userHomeBanners?startAt[$lte]=${now}&endAt[$gte]=${now}&$sort[seq]=1`);
 
   return (
     <div style={{ maxWidth: 488 }}>
@@ -22,10 +22,10 @@ function BannerCarousel() {
         slideIndex={slideIndex}
         afterSlide={i => setSlideIndex(i)}
       >
-        {banners && banners.data.map(banner => {
-          const url = `${Contants.ASSET_BASE_URL}startapp/home/banner/${banner.assetbundleName}/${banner.assetbundleName}.png`;
+        {banners && banners.data.map((banner, i) => {
+          const url = `${Constants.ASSET_BASE_URL}startapp/home/banner/${banner.assetbundleName}/${banner.assetbundleName}.png`;
           return (
-            <div key={banner.id}>
+            <div key={i}>
               <img style={{ height: '100%', width: '100%', objectFit: 'contain' }} src={url} />
             </div>
           );
@@ -42,7 +42,7 @@ function BannerCarousel() {
           <Grid item />
           {banners && banners.data.map((banner, i) => {
             return (
-              <Grid key={banner.id} item xs={1}>
+              <Grid key={i} item xs={1}>
                 <ButtonBase style={{ borderRadius: '50%' }} onClick={() => {
                   setSlideIndex(i);
                 }}>

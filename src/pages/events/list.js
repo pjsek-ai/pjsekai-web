@@ -5,21 +5,21 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 
 import EventCard from '../../components/EventCard';
-import Contants from '../../constants';
+import Constants from '../../constants';
 
 function EventList() {
 
   const itemPerLoad = 20;
 
   const history = useHistory();
-  const { data, mutate } = useSWR(`${Contants.API_BASE_URL}database/master/events?&$limit=${itemPerLoad}&$sort[startAt]=-1`);
+  const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/events?&$limit=${itemPerLoad}&$sort[startAt]=-1`);
   return (
     <div>
       {data &&
         <InfiniteScroll
           pageStart={0}
           loadMore={() => mutate(async data => {
-            const nextData = await fetch(`$${Contants.API_BASE_URL}database/master/events?&$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${data.skip + data.limit}`).then(res => res.json());
+            const nextData = await fetch(`$${Constants.API_BASE_URL}database/master/events?&$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${data.skip + data.limit}`).then(res => res.json());
             return {
               ...data,
               ...nextData,

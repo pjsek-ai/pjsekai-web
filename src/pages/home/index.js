@@ -1,18 +1,21 @@
 import React from "react";
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+} from '@material-ui/core';
 import useSWR from "swr";
 import moment from 'moment';
 
 import BannerCarousel from '../../components/BannerCarousel';
-import Contants from '../../constants';
+import Constants from '../../constants';
 
 function Home() {
 
-  const { data: systemInfo } = useSWR(`${Contants.API_BASE_URL}system-info`);
+  const { data: systemInfo } = useSWR(`${Constants.API_BASE_URL}system-info`);
 
-  return <div>
+  return <Container>
     <BannerCarousel />
     {systemInfo ?
       <div>
@@ -48,7 +51,7 @@ function Home() {
         </Typography>
       </div>
     }
-  </div>;
+  </Container>;
 
 }
 

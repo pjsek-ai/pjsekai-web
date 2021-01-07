@@ -1,24 +1,29 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
 } from "react-router-dom";
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import {
+  AppBar,
+  CssBaseline,
+  Divider,
+  Drawer,
+  Hidden,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
+
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
+import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import StorageIcon from '@material-ui/icons/Storage';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -30,16 +35,22 @@ import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import GavelIcon from '@material-ui/icons/Gavel';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 
-import Home from "./home";
-import Notices from "./notices";
-import Events from "./events";
-import Assets from "./assets";
-import NotFound from "./notFound";
-import UnderConstruction from "./underConstruction";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/opacity.css';
+
+import DrawerListItem from '../components/DrawerListItem';
+
+const Home = lazy(() => import('./home'));
+const Notices = lazy(() => import('./notices'));
+const Events = lazy(() => import('./events'));
+const Members = lazy(() => import('./members'));
+const Database = lazy(() => import('./database'));
+const Assets = lazy(() => import('./assets'));
+const NotFound = lazy(() => import('./notFound'));
+const UnderConstruction = lazy(() => import('./underConstruction'));
 
 const drawerWidth = 240;
 
@@ -48,20 +59,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
   },
   appBar: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
@@ -75,6 +86,96 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }));
+
+const routes = [
+  {
+    name: 'Home',
+    path: '/',
+    exact: true,
+    icon: <HomeIcon />,
+    page: <Home />,
+  },
+  {
+    name: 'Notices',
+    path: '/notices',
+    exact: false,
+    icon: <NotificationsIcon />,
+    page: <Notices />,
+  },
+  {
+    name: 'Members',
+    path: '/members',
+    exact: false,
+    icon: <AssignmentIndIcon />,
+    page: <Members />,
+  },
+  {
+    name: 'Gachas',
+    path: '/gachas',
+    exact: false,
+    icon: null,
+    page: null,
+  },
+  {
+    name: 'Songs',
+    path: '/songs',
+    exact: false,
+    icon: null,
+    page: null,
+  },
+  {
+    name: 'Events',
+    path: '/events',
+    exact: false,
+    icon: <DateRangeIcon />,
+    page: <Events />,
+  },
+  {
+    name: '',
+    path: '/event-charts',
+    exact: false,
+    icon: null,
+    page: null,
+  },
+  {
+    name: 'Stories',
+    path: '/stories',
+    exact: false,
+    icon: null,
+    page: null,
+  },
+  {
+    name: 'Virtual Lives',
+    path: '/virtual-lives',
+    exact: false,
+    icon: null,
+    page: null,
+  },
+  {
+    divider: true,
+  },
+  {
+    name: 'Database',
+    path: '/database',
+    exact: false,
+    icon: <StorageIcon />,
+    page: <Database />,
+  },
+  {
+    name: 'Assets',
+    path: '/assets',
+    exact: false,
+    icon: <PermMediaIcon />,
+    page: <Assets />,
+  },
+  {
+    name: '',
+    path: '/my-profile',
+    exact: false,
+    icon: null,
+    page: null,
+  }
+];
 
 function Index({ window }) {
   const classes = useStyles();
@@ -97,61 +198,34 @@ function Index({ window }) {
   }, [darkMode]);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setMobileOpen(prevMobileOpen => !prevMobileOpen);
   };
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
+      <div className={classes.toolbar}>
+        {/* <LazyLoadImage
+          style={{
+            height: '100%',
+            width: '100%',
+            objectFit: 'contain',
+          }}
+          src='tex_title_logo_all_01.png'
+          effect='opacity'
+        /> */}
+      </div>
       <Divider />
       <List component='nav'>
-        <ListItem button component={Link} to='/'>
-          <ListItemIcon><HomeIcon /></ListItemIcon>
-          <ListItemText primary='Home' />
-        </ListItem>
-        <ListItem button component={Link} to='/notices'>
-          <ListItemIcon><NotificationsIcon /></ListItemIcon>
-          <ListItemText primary='Notices' />
-        </ListItem>
-        <ListItem button component={Link} to='/events'>
-          <ListItemIcon><DateRangeIcon /></ListItemIcon>
-          <ListItemText primary='Events' />
-        </ListItem>
-        <ListItem button component={Link} to='/songs'>
-          {/* <ListItemIcon><MusicNoteIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
-          <ListItemText primary='Songs' />
-        </ListItem>
-        <ListItem button component={Link} to='/cards'>
-          {/* <ListItemIcon><AssignmentIndIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
-          <ListItemText primary='Cards' />
-        </ListItem>
-        <ListItem button component={Link} to='/gachas'>
-          {/* <ListItemIcon><LocalActivityIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
-          <ListItemText primary='Gachas' />
-        </ListItem>
-        <ListItem button component={Link} to='/stories'>
-          {/* <ListItemIcon><ChromeReaderModeIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
-          <ListItemText primary='Stories' />
-        </ListItem>
-        <ListItem button component={Link} to='/virtual-lives'>
-          {/* <ListItemIcon><EmojiPeopleIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
-          <ListItemText primary='Virtual Lives' />
-        </ListItem>
-        <Divider />
-        <ListItem button component={Link} to='/database'>
-          {/* <ListItemIcon><StorageIcon /></ListItemIcon> */}
-          <ListItemIcon><GavelIcon /></ListItemIcon>
-          <ListItemText primary='Database' />
-        </ListItem>
-        <ListItem button component={Link} to='/assets'>
-          <ListItemIcon><PermMediaIcon /></ListItemIcon>
-          <ListItemText primary='Assets' />
-        </ListItem>
+        {
+          routes.filter(route => route.divider || route.name).map((route, i) => {
+            if (route.divider) {
+              return <Divider />;
+            }
+            return (
+              <DrawerListItem key={i} route={route} onClick={handleDrawerToggle} />
+            );
+          })
+        }
       </List>
     </div>
   );
@@ -179,7 +253,7 @@ function Index({ window }) {
               <IconButton
                 color="inherit"
                 edge="end"
-                onClick={() => setDarkMode(!darkMode)}
+                onClick={() => setDarkMode(prevDarkMode => !prevDarkMode)}
               >
                 {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>
@@ -187,7 +261,7 @@ function Index({ window }) {
           </AppBar>
           <nav className={classes.drawer} aria-label='drawer'>
             {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-            <Hidden smUp implementation='css'>
+            <Hidden mdUp implementation='css'>
               <Drawer
                 container={container}
                 variant='temporary'
@@ -204,7 +278,7 @@ function Index({ window }) {
                 {drawer}
               </Drawer>
             </Hidden>
-            <Hidden xsDown implementation='css'>
+            <Hidden smDown implementation='css'>
               <Drawer
                 classes={{
                   paper: classes.drawerPaper,
@@ -218,44 +292,18 @@ function Index({ window }) {
           </nav>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-
             <Switch>
-              <Route exact path='/'>
-                <Home />
-              </Route>
-              <Route path='/notices'>
-                <Notices />
-              </Route>
-              <Route path='/events'>
-                <Events />
-              </Route>
-              <Route path='/event-charts'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/songs'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/cards'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/gachas'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/stories'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/virtual-lives'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/database'>
-                <UnderConstruction />
-              </Route>
-              <Route path='/assets'>
-                <Assets />
-              </Route>
-              <Route path='/my-profile'>
-                <UnderConstruction />
-              </Route>
+              {
+                routes.filter(route => route.path).map((route, i) => {
+                  return (
+                    <Route key={i} exact={route.exact} path={route.path}>
+                      <Suspense fallback={<div>Loading...</div>}>
+                        {route.page || <UnderConstruction />}
+                      </Suspense>
+                    </Route>
+                  );
+                })
+              }
               <Route path='*'>
                 <NotFound />
               </Route>

@@ -15,7 +15,7 @@ import moment from 'moment';
 import GavelIcon from '@material-ui/icons/Gavel';
 
 import EventSlides from './EventSlides';
-import Contants from '../constants';
+import Constants from '../constants';
 
 
 function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVliveClick }) {
@@ -26,7 +26,7 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
     <div>
       <Card style={{
         marginBottom: 16,
-        backgroundImage: `url(${Contants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/screen/bg/bg.png)`,
+        backgroundImage: `url(${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/screen/bg/bg.png)`,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -50,7 +50,7 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
                       width: '100%',
                       objectFit: 'contain',
                     }}
-                    src={`${Contants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/screen/banner/banner.png`}
+                    src={`${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/screen/banner/banner.png`}
                     effect='opacity'
                   />
                 </CardActionArea>
@@ -71,7 +71,7 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
                   width: '100%',
                   objectFit: 'contain',
                 }}
-                src={`${Contants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/logo/logo/logo.png`}
+                src={`${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/logo/logo/logo.png`}
                 effect='opacity'
               />
 

@@ -6,17 +6,20 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactAudioPlayer from 'react-audio-player';
 import ReactPlayer from 'react-player';
 import useSWR from 'swr';
-import Typography from '@material-ui/core/Typography';
+import {
+  Typography,
+  Paper,
+} from '@material-ui/core';
 import ReactJson from 'react-json-view';
 import { OBJModel } from 'react-3d-viewer';
 // import Viewer from 'react-viewer';
-import Contants from '../constants';
+import Constants from '../constants';
 
 const getRequest = url => axios.get(url).then(r => r.data);
 
 const Asset = ({ asset }) => {
 
-  const url = `${Contants.ASSET_BASE_URL}${asset.path}`;
+  const url = `${Constants.ASSET_BASE_URL}${asset.path}`;
   const { data, error } = useSWR(
     asset.path.endsWith('.json') || !asset.path.includes('.') ? url : null,
     getRequest,
@@ -68,7 +71,11 @@ const Asset = ({ asset }) => {
     />;
   }
   else if (asset.path.endsWith('.json')) {
-    return <ReactJson src={data} name={false} />;
+    return (
+      <Paper style={{ height: '100%', margin: 8, padding: 16, backgroundColor: '#272822' }}>
+        <ReactJson src={data} name={false} theme='monokai' displayDataTypes={false} />
+      </Paper>
+    );
   }
   else if (asset.path.endsWith('.obj')) {
     return <OBJModel

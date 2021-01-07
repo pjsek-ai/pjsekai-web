@@ -15,7 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import Contants from '../../constants';
+import Constants from '../../constants';
 
 function Assets() {
   const sm = useMediaQuery(theme => theme.breakpoints.up('sm'));
@@ -23,7 +23,7 @@ function Assets() {
   const location = useLocation();
   const history = useHistory();
   const assetPath = location.pathname.split('/').filter((x, i) => i > 1 && x).join('/');
-  const { data: assetNode } = useSWR(`${Contants.API_BASE_URL}assets?path=${assetPath}`);
+  const { data: assetNode } = useSWR(`${Constants.API_BASE_URL}assets?path=${assetPath}`);
 
   const [selectedPath, setSelectedPath] = useState(assetPath);
   useEffect(() => {
@@ -45,7 +45,7 @@ function Assets() {
   };
 
   const cache = async path => {
-    const directoryData = await fetch(`${Contants.API_BASE_URL}assets?parent=${path}&$limit=1000&$sort[isDir]=-1&$sort[path]=1`).then(res => res.json());
+    const directoryData = await fetch(`${Constants.API_BASE_URL}assets?parent=${path}&$limit=1000&$sort[isDir]=-1&$sort[path]=1`).then(res => res.json());
     setDirectoryCache(prevDirectoryCache => ({ ...prevDirectoryCache, [path]: directoryData }));
     return directoryData;
   }
@@ -92,13 +92,13 @@ function Assets() {
 
   let buttonComponent = assetNode && assetNode.data[0] && !assetNode.data[0].isDir ?
     <Grid container direction="row">
-      <CopyToClipboard text={`${Contants.ASSET_BASE_URL}${assetPath}`}>
+      <CopyToClipboard text={`${Constants.ASSET_BASE_URL}${assetPath}`}>
         <Button variant="contained" color="primary">
           Copy asset URL
       </Button>
       </CopyToClipboard>
       <div style={{ paddingLeft: 8 }}>
-        <Button variant="contained" color="primary" href={`${Contants.ASSET_BASE_URL}${assetPath}`} target='_blank' download>
+        <Button variant="contained" color="primary" href={`${Constants.ASSET_BASE_URL}${assetPath}`} target='_blank' download>
           Download
       </Button>
       </div>
@@ -128,26 +128,30 @@ function Assets() {
                 expanded={expandedTreeNodes}
                 selected={assetPath}
                 onClick={async node => {
-                  if (expandedTreeNodes.includes(node.path)) {
+                  if (node.path === assetPath && !node.isDir) {
+                    history.push(`/assets/${node.parent}`);
+                  }
+                  else if (expandedTreeNodes.includes(node.path)) {
                     setExpandedTreeNodes(prevExpandedTreeNodes => prevExpandedTreeNodes.filter(expandedPath => expandedPath !== node.path));
                     history.push(`/assets/${node.parent}`);
                   }
                   else {
                     enter(node);
-                    mutate(`${Contants.API_BASE_URL}assets?path=${node.path}`, { limit: 1, skip: 0, data: [node] });
+                    mutate(`${Constants.API_BASE_URL}assets?path=${node.path}`, { limit: 1, skip: 0, data: [node] });
                     if (node.isDir) {
                       let dirs = directoryCache[node.path];
                       if (!dirs) {
                         dirs = await cache(node.path);
                       }
-                      dirs.data.forEach(dir => {
-                        if (!(dir.path in directoryCache)) {
-                          cache(dir.path);
-                        }
-                      });
+                      if (dirs.data.length <= 5) {
+                        dirs.data.forEach(dir => {
+                          if (!(dir.path in directoryCache)) {
+                            cache(dir.path);
+                          }
+                        });
+                      }
                     }
                   }
-
                 }}
               />}
             </Paper>

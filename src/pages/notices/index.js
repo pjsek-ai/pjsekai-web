@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 import NoticeCard from '../../components/NoticeCard';
 import NoticeDialog from '../../components/NoticeDialog';
-import Contants from '../../constants';
+import Constants from '../../constants';
 
 function Notices() {
 
@@ -19,9 +19,11 @@ function Notices() {
   const [open, setOpen] = useState(false);
   const [notice, setNotice] = useState(null);
 
-  const { data: normalData, mutate: normalMutate } = useSWR(`${Contants.API_BASE_URL}database/user/userInformations?informationType=normal&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}`);
-  const { data: bugData, mutate: bugMutate } = useSWR(`${Contants.API_BASE_URL}database/user/userInformations?informationType=bug&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}`);
-  const { data: contentData, mutate: contentMutate } = useSWR(`${Contants.API_BASE_URL}database/user/userInformations?informationType=content&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}`);
+  // const [normalNotices, setNormalNotices] = useState({});
+  // const [normalNotices, setNormalNotices] = useState({});
+  const { data: normalData, mutate: normalMutate } = useSWR(`${Constants.API_BASE_URL}database/user/userInformations?informationType=normal&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}`);
+  const { data: bugData, mutate: bugMutate } = useSWR(`${Constants.API_BASE_URL}database/user/userInformations?informationType=bug&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}`);
+  const { data: contentData, mutate: contentMutate } = useSWR(`${Constants.API_BASE_URL}database/user/userInformations?informationType=content&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}`);
 
   let type, data, mutate;
   switch (tabIndex) {
@@ -56,7 +58,7 @@ function Notices() {
             key={tabIndex}
             pageStart={0}
             loadMore={() => mutate(async data => {
-              const nextData = await fetch(`${Contants.API_BASE_URL}database/user/userInformations?informationType=${type}&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}&$skip=${data.skip + data.limit}`).then(res => res.json());
+              const nextData = await fetch(`${Constants.API_BASE_URL}database/user/userInformations?informationType=${type}&$limit=${itemPerLoad}&$sort${showAll ? '[startAt]=-1' : '[seq]=1'}&$skip=${data.skip + data.limit}`).then(res => res.json());
               return {
                 ...data,
                 ...nextData,

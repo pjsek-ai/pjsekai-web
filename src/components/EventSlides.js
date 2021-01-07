@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-import Contants from '../constants';
+import Constants from '../constants';
 
 function EventSlides({ event, open, onClose }) {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -70,7 +70,7 @@ function EventSlides({ event, open, onClose }) {
                 afterSlide={i => setSlideIndex(i)}
               >
                 {[1, 2, 3, 4].map(i => {
-                  const url = `${Contants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/slide/top/event_${`${i}`.padStart(2, '0')}.png`;
+                  const url = `${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/slide/top/event_${`${i}`.padStart(2, '0')}.png`;
                   return (
                     <div key={i} style={{ borderRadius: 48, padding: 24, paddingBottom: 16, backgroundColor: '#ffffff' }}>
                       <img
