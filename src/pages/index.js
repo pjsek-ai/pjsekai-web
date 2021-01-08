@@ -219,7 +219,7 @@ function Index({ window }) {
         {
           routes.filter(route => route.divider || route.name).map((route, i) => {
             if (route.divider) {
-              return <Divider />;
+              return <Divider key={i} />;
             }
             return (
               <DrawerListItem key={i} route={route} onClick={handleDrawerToggle} />

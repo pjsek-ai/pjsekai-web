@@ -25,17 +25,17 @@ function MemberList() {
     limit: 0,
   });
   useEffect(async () => {
-    const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&$sort[releaseAt]=-1&$sort[seq]=-1`);
+    const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&&$sort[seq]=-1`);
     setCards(response.data);
   }, []);
 
-  // const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&$sort[releaseAt]=-1&$sort[id]=-1`);
+  // const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&&$sort[id]=-1`);
   return (
     <div>
       <InfiniteScroll
         pageStart={0}
         loadMore={async () => {
-          const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&$sort[releaseAt]=-1&$sort[seq]=-1&$skip=${cards.skip + cards.limit}`);
+          const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&$sort[seq]=-1&$skip=${cards.skip + cards.limit}`);
           setCards(prevCards => {
             const nextCards = response.data;
             return {
