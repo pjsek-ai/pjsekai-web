@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import useSWR from "swr";
 import {
   Switch,
@@ -12,13 +12,15 @@ import NotFound from '../notFound';
 import UnderConstruction from '../underConstruction';
 import Constants from '../../constants';
 
+const Rankings = lazy(() => import('./rankings'));
+
 function SingleEvent() {
   const { eventId } = useParams();
   const { path, url } = useRouteMatch();
   const history = useHistory();
-  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/events?&id=${eventId}`);
+  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/events?id=${eventId}`);
   return (
-    <div>
+    <div><Suspense fallback={<div>Loading...</div>}>
       <Switch>
         <Route exact path={path}>
           {data &&
@@ -43,13 +45,15 @@ function SingleEvent() {
           }
         </Route>
         <Route path={`${path}/rankings`}>
-          <UnderConstruction />
+
+          {data && data.data[0] && <Rankings event={data.data[0]} />}
+
         </Route>
         <Route path={`${path}/shop`}>
           <UnderConstruction />
         </Route>
       </Switch>
-
+    </Suspense>
     </div>
   );
 }

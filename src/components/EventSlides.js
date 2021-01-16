@@ -53,7 +53,7 @@ function EventSlides({ event, open, onClose }) {
                     width: '100%',
                     objectFit: 'contain',
                   }}
-                  src='/events/arrow_switching_left.png'
+                  src='/images/event/arrow_switching_left.png'
                   effect='opacity'
                 />
               </ButtonBase>
@@ -160,7 +160,7 @@ function EventSlides({ event, open, onClose }) {
                     width: '100%',
                     objectFit: 'contain',
                   }}
-                  src='/events/arrow_switching_right.png'
+                  src='/images/event/arrow_switching_right.png'
                   effect='opacity'
                 />
               </ButtonBase>

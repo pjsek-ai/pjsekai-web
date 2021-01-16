@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import {
   Switch,
   Route,
   useRouteMatch
 } from "react-router-dom";
-import EventList from './list';
-import SingleEvent from './single';
+
+const EventList = lazy(() => import('./list'));
+const SingleEvent = lazy(() => import('./single'));
 
 function Events() {
   const { path, url } = useRouteMatch();
   return (
     <div>
-      <Switch>
-        <Route exact path={path}>
-          <EventList />
-        </Route>
-        <Route path={`${path}/:eventId`}>
-          <SingleEvent />
-        </Route>
-      </Switch>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route exact path={path}>
+            <EventList />
+          </Route>
+          <Route path={`${path}/:eventId`}>
+            <SingleEvent />
+          </Route>
+        </Switch>
+      </Suspense>
+
     </div>
   );
 }

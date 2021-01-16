@@ -25,17 +25,17 @@ function MemberList() {
     limit: 0,
   });
   useEffect(async () => {
-    const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&&$sort[seq]=-1`);
+    const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&&$sort[seq]=-1`);
     setCards(response.data);
   }, []);
 
-  // const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&&$sort[id]=-1`);
+  // const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&&$sort[id]=-1`);
   return (
     <div>
       <InfiniteScroll
         pageStart={0}
         loadMore={async () => {
-          const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?&$limit=${itemPerLoad}&$sort[seq]=-1&$skip=${cards.skip + cards.limit}`);
+          const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&$sort[seq]=-1&$skip=${cards.skip + cards.limit}`);
           setCards(prevCards => {
             const nextCards = response.data;
             return {
@@ -66,7 +66,12 @@ function MemberList() {
                         history.push(`/members/${entry.id}`);
                       }}
                     >
-                      <MemberThumbnail style={{ height: '100%', width: '100%' }} info={entry} afterTraining={showAfterTraining} />
+                      <MemberThumbnail
+                        style={{ height: '100%', width: '100%' }}
+                        info={entry}
+                        trainedStars={showAfterTraining}
+                        trainedImage={showAfterTraining}
+                      />
                     </ButtonBase>
                   </Paper>
                 </div>
@@ -86,7 +91,7 @@ function MemberList() {
           height: '50%',
           width: '50%',
           objectFit: 'contain',
-        }} src='/members/icon_change_gn.png' />
+        }} src='/images/member/icon_change_gn.png' />
       </Fab>
     </div >
   );

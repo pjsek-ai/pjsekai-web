@@ -101,7 +101,6 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
             size="small"
             variant="contained"
             onClick={() => onRankingsClick(event)}
-            startIcon={<GavelIcon />}
           >
             Rankings
         </Button>

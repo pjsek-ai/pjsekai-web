@@ -21,7 +21,7 @@ function UnderConstruction() {
           width: '100%',
           objectFit: 'contain',
         }}
-        src='/construction.gif'
+        src='/images/construction.gif'
         effect='opacity'
       />
     </Grid>

@@ -27,11 +27,11 @@ function SingleMember() {
   const [story1Activation, setStory1Activation] = useState(false);
   const [story2Activation, setStory2Activation] = useState(false);
   const [masterRank, setMasterRank] = useState(0);
-  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/cards?&id=${cardId}`);
-  const { data: characterData } = useSWR(data && data.data[0] ? `${Constants.API_BASE_URL}database/master/gameCharacters?&id=${data.data[0].characterId}` : null);
-  const { data: rarityData } = useSWR(data && data.data[0] ? `${Constants.API_BASE_URL}database/master/cardRarities?&rarity=${data.data[0].rarity}` : null);
-  const supportUnitImageUrl = `/members/logo_${data && data.data[0].supportUnit}.png`;
-  const unitImageUrl = `/members/logo_${characterData && characterData.data[0].unit}.png`;
+  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/cards?id=${cardId}`);
+  const { data: characterData } = useSWR(data && data.data[0] ? `${Constants.API_BASE_URL}database/master/gameCharacters?id=${data.data[0].characterId}` : null);
+  const { data: rarityData } = useSWR(data && data.data[0] ? `${Constants.API_BASE_URL}database/master/cardRarities?rarity=${data.data[0].rarity}` : null);
+  const supportUnitImageUrl = `/images/member/logo_${data && data.data[0].supportUnit}.png`;
+  const unitImageUrl = `/images/member/logo_${characterData && characterData.data[0].unit}.png`;
 
   // console.log(rarityData);
 
@@ -77,7 +77,7 @@ function SingleMember() {
               </Grid>
             }
           </Grid>
-          {data && <MemberArt info={data.data[0]} afterTraining={showAfterTraining} />}
+          {data && rarityData && <MemberArt info={data.data[0]} trainedStars={level > rarityData.data[0].maxLevel} trainedImage={showAfterTraining} />}
           <Grid container alignItems='center'>
             <Grid item xs={2}>
               <Fab size='small' onClick={() => setShowAfterTraining(!showAfterTraining)}>
@@ -85,7 +85,7 @@ function SingleMember() {
                   height: '50%',
                   width: '50%',
                   objectFit: 'contain',
-                }} src='/members/icon_change_gn.png' />
+                }} src='/images/member/icon_change_gn.png' />
               </Fab>
             </Grid>
             {/* <Grid item xs={5}>
@@ -107,8 +107,8 @@ function SingleMember() {
           </Grid>
         </Grid>
         <Grid item xs={12} lg={5}>
-          <UnderConstruction />
-          {/* <Paper style={{ margin: 8, padding: 8 }} >
+
+          <Paper style={{ margin: 8, padding: 8 }} >
             <Grid container>
               <Grid item xs={3}>
                 <Typography>
@@ -188,7 +188,8 @@ function SingleMember() {
 
               </Typography>
             </Grid>
-          </Paper> */}
+          </Paper>
+          <UnderConstruction />
         </Grid>
       </Grid>
     </Paper>

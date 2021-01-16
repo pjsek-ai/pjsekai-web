@@ -21,7 +21,7 @@ function NotFound() {
           width: '100%',
           objectFit: 'contain',
         }}
-        src='/confused.gif'
+        src='/images/confused.gif'
         effect='opacity'
       />
     </Grid>

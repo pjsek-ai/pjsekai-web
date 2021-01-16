@@ -75,7 +75,7 @@ function NoticeCard({ notice, onNoticeClick }) {
                       width: '100%',
                       objectFit: 'contain',
                     }}
-                    src={`/notices/${icons[notice.informationTag]}`}
+                    src={`/images/notice/${icons[notice.informationTag]}`}
                     effect='opacity'
                   />
                 </Grid>

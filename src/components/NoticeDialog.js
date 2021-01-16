@@ -48,7 +48,7 @@ function NoticeDialog({ notice, onClose, open }) {
                 width: '100%',
                 objectFit: 'contain',
               }}
-              src={`/notices/${icons[notice.informationTag]}`}
+              src={`/images/notice/${icons[notice.informationTag]}`}
               effect='opacity'
             />
           </Grid>
