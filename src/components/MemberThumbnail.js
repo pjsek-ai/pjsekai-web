@@ -18,32 +18,32 @@ function MemberThumbnail({ info, trainedStars, trainedImage, masterRank = 0, lev
 
   return (
     <svg {...props} viewBox='0 0 156 156'>
-      <image href={normalThumbnailUrl} x={8} y={8} height={140} width={140} />
+      <image href={normalThumbnailUrl} x={8} y={8} width={140} height={140} />
       {info.rarity > 2 &&
         <Fade in={showTrainedImage}>
-          <image href={afterTrainingThumbnailUrl} x={8} y={8} height={140} width={140} />
+          <image href={afterTrainingThumbnailUrl} x={8} y={8} width={140} height={140} />
         </Fade>
       }
       {level && <rect x={0} y={156 - 8 - 24} width='156' height='24' style={{ fill: '#444466' }} />}
       {level && <text x={8 + 2} y={156 - 8 - 2} style={{ fill: '#ffffff', fontSize: '24px' }}>Lv.{level}</text>}
-      <image href={frameUrl} x={0} y={0} height={156} width={156} />
-      <image href={attributeUrl} x={0} y={0} height={36} width={36} />
+      <image href={frameUrl} x={0} y={0} width={156} height={156} />
+      <image href={attributeUrl} x={0} y={0} width={36} height={36} />
       {
         [...Array(info.rarity)].map((_, i) =>
-          <image key={i} href={normalStarUrl} x={8 + 24 * i} y={156 - 8 - 23 - (level ? 28 : 0)} height={23} width={24} />
+          <image key={i} href={normalStarUrl} x={8 + 2 + 23 * i} y={156 - 8 - 2 - 22 - (level ? 24 : 0)} width={23} height={22} />
         )
       }
       {info.rarity > 2 &&
         [...Array(info.rarity)].map((_, i) =>
           <Fade key={i} in={showTrainedStars}>
-            <image href={afterTrainingStarUrl} x={8 + 24 * i} y={156 - 8 - 23 - (level ? 28 : 0)} height={23} width={24} />
+            <image href={afterTrainingStarUrl} x={8 + 2 + 23 * i} y={156 - 8 - 2 - 22 - (level ? 24 : 0)} width={23} height={22} />
           </Fade>
         )
       }
       {masterRank > 0 &&
         [...Array(5)].map((_, i) =>
           <Fade key={i} in={masterRank === i + 1}>
-            <image href={`/images/member/masterRank_L_${i + 1}.png`} x={156 - 52} y={156 - 52} height={52} width={52} />
+            <image href={`/images/member/masterRank_L_${i + 1}.png`} x={156 - 52} y={156 - 52} width={52} height={52} />
           </Fade>
         )
       }

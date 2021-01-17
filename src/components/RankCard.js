@@ -54,13 +54,13 @@ function RankCard({ info }) {
           </div>
           <Grid container spacing={1}>
             <Grid item xs={6}>
-              <HonorMain info={honor1Data ? honor1Data.data[0] : null} level={info.userProfile.honorLevel1} />
+              <HonorMain style={{ maxHeight: 60 }} info={honor1Data ? honor1Data.data[0] : null} level={info.userProfile.honorLevel1} />
             </Grid>
             <Grid item xs={3}>
-              <HonorSub info={honor2Data ? honor2Data.data[0] : null} level={info.userProfile.honorLevel2} />
+              <HonorSub style={{ maxHeight: 60 }} info={honor2Data ? honor2Data.data[0] : null} level={info.userProfile.honorLevel2} />
             </Grid>
             <Grid item xs={3}>
-              <HonorSub info={honor3Data ? honor3Data.data[0] : null} level={info.userProfile.honorLevel3} />
+              <HonorSub style={{ maxHeight: 60 }} info={honor3Data ? honor3Data.data[0] : null} level={info.userProfile.honorLevel3} />
             </Grid>
           </Grid>
         </Grid>

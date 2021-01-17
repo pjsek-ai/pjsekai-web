@@ -37,6 +37,7 @@ import PermMediaIcon from '@material-ui/icons/PermMedia';
 import GavelIcon from '@material-ui/icons/Gavel';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
@@ -49,6 +50,7 @@ const Events = lazy(() => import('./events'));
 const Members = lazy(() => import('./members'));
 const Database = lazy(() => import('./database'));
 const Assets = lazy(() => import('./assets'));
+const Donate = lazy(() => import('./donate'));
 const NotFound = lazy(() => import('./notFound'));
 const UnderConstruction = lazy(() => import('./underConstruction'));
 
@@ -167,6 +169,16 @@ const routes = [
     exact: false,
     icon: <PermMediaIcon />,
     page: <Assets />,
+  },
+  {
+    divider: true,
+  },
+  {
+    name: 'Donate',
+    path: '/donate',
+    exact: false,
+    icon: <MonetizationOnIcon />,
+    page: <Donate />,
   },
   {
     name: '',
