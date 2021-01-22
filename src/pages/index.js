@@ -48,6 +48,7 @@ const Home = lazy(() => import('./home'));
 const Notices = lazy(() => import('./notices'));
 const Events = lazy(() => import('./events'));
 const Members = lazy(() => import('./members'));
+const Gachas = lazy(() => import('./gachas'));
 const Database = lazy(() => import('./database'));
 const Assets = lazy(() => import('./assets'));
 const Donate = lazy(() => import('./donate'));
@@ -115,8 +116,8 @@ const routes = [
     name: 'Gachas',
     path: '/gachas',
     exact: false,
-    icon: null,
-    page: null,
+    icon: <LocalActivityIcon />,
+    page: <Gachas />,
   },
   {
     name: 'Songs',

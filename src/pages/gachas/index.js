@@ -5,20 +5,20 @@ import {
   useRouteMatch
 } from "react-router-dom";
 
-const MemberList = lazy(() => import('./list'));
-const SingleMember = lazy(() => import('./single'));
+const GachaList = lazy(() => import('./list'));
+const GachaPage = lazy(() => import('./single'));
 
-function Members() {
+function Cards() {
   const { path, url } = useRouteMatch();
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route exact path={path}>
-            <MemberList />
+            <GachaList />
           </Route>
-          <Route path={`${path}/:cardId`}>
-            <SingleMember />
+          <Route path={`${path}/:gachaId`}>
+            <GachaPage />
           </Route>
         </Switch>
       </Suspense>
@@ -26,4 +26,4 @@ function Members() {
   );
 }
 
-export default Members;
+export default Cards;
