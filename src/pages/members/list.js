@@ -15,7 +15,7 @@ import MemberThumbnail from '../../components/MemberThumbnail';
 import Constants from '../../constants';
 
 function MemberList() {
-  const itemPerLoad = 24;
+  const itemPerLoad = 36;
 
   const [showAfterTraining, setShowAfterTraining] = useState(false);
   const history = useHistory();
