@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Container,
+  Grid,
   Typography,
   List,
   ListItem,
@@ -14,45 +14,107 @@ import Constants from '../../constants';
 function Home() {
 
   const { data: systemInfo } = useSWR(`${Constants.API_BASE_URL}system-info`);
+  const { data: patrons } = useSWR(`${Constants.API_BASE_URL}patrons?$limit=-1`);
 
-  return <Container>
-    <BannerCarousel />
-    {systemInfo ?
-      <div>
+  const masters = patrons ? patrons.filter(patron => patron.Tier === "Master") : [];
+  const experts = patrons ? patrons.filter(patron => patron.Tier === "Expert") : [];
+  const hards = patrons ? patrons.filter(patron => patron.Tier === "Hard") : [];
+
+  return <Grid container spacing={2}>
+    <Grid item xs={12} md={6}>
+      <BannerCarousel />
+      {systemInfo ?
+        <div>
+          <Typography>
+            Latest versions since {moment(systemInfo.data[0].datetime).fromNow()} ({moment(systemInfo.data[0].datetime).format('lll')})
+          </Typography>
+          <List>
+            <ListItem>
+              <Typography>
+                App version: {systemInfo.data[0].appVersion}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>
+                Multiplayer version: {systemInfo.data[0].multiPlayVersion}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>
+                Data version: {systemInfo.data[0].dataVersion}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography>
+                Asset version: {systemInfo.data[0].assetVersion}
+              </Typography>
+            </ListItem>
+          </List>
+        </div> :
+        <div>
+          <Typography>
+            Loading...
+          </Typography>
+        </div>
+      }
+    </Grid>
+    {
+      patrons && patrons.length > 0 &&
+      <Grid item xs={12} md={6}>
         <Typography>
-          Latest versions since {moment(systemInfo.data[0].datetime).fromNow()} ({moment(systemInfo.data[0].datetime).format('lll')})
+          Special thanks to our patrons
         </Typography>
-        <List>
-          <ListItem>
+        {masters.length > 0 &&
+          <div>
             <Typography>
-              App version: {systemInfo.data[0].appVersion}
+              Master tier:
             </Typography>
-          </ListItem>
-          <ListItem>
+            <List>
+              {masters.map(patron => {
+                return <ListItem>
+                  <Typography>
+                    {patron.Name}
+                  </Typography>
+                </ListItem>
+              })}
+            </List>
+          </div>
+        }
+        {experts.length > 0 &&
+          <div>
             <Typography>
-              Multiplayer version: {systemInfo.data[0].multiPlayVersion}
+              Expert tier:
             </Typography>
-          </ListItem>
-          <ListItem>
+            <List>
+              {experts.map(patron => {
+                return <ListItem>
+                  <Typography>
+                    {patron.Name}
+                  </Typography>
+                </ListItem>
+              })}
+            </List>
+          </div>
+        }
+        {hards.length > 0 &&
+          <div>
             <Typography>
-              Data version: {systemInfo.data[0].dataVersion}
+              Hard tier:
             </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography>
-              Asset version: {systemInfo.data[0].assetVersion}
-            </Typography>
-          </ListItem>
-        </List>
-      </div> :
-      <div>
-        <Typography>
-          Loading...
-        </Typography>
-      </div>
+            <List>
+              {hards.map(patron => {
+                return <ListItem>
+                  <Typography>
+                    {patron.Name}
+                  </Typography>
+                </ListItem>
+              })}
+            </List>
+          </div>
+        }
+      </Grid>
     }
-  </Container>;
-
+  </Grid>
 }
 
 export default Home;
