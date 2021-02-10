@@ -9,7 +9,7 @@ import Constants from '../../constants';
 
 function EventList() {
 
-  const itemPerLoad = 20;
+  const itemPerLoad = 10;
 
   const history = useHistory();
   const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/events?$limit=${itemPerLoad}&$sort[startAt]=-1`);

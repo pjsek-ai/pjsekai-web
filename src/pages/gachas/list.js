@@ -13,7 +13,7 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import Constants from '../../constants';
 
 function GachaList() {
-  const itemPerLoad = 12;
+  const itemPerLoad = 24;
 
   const history = useHistory();
 
