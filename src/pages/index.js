@@ -42,18 +42,19 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-import DrawerListItem from '../components/DrawerListItem';
+import DrawerListItem from 'components/DrawerListItem';
 
-const Home = lazy(() => import('./home'));
-const Notices = lazy(() => import('./notices'));
-const Events = lazy(() => import('./events'));
-const Members = lazy(() => import('./members'));
-const Gachas = lazy(() => import('./gachas'));
-const Database = lazy(() => import('./database'));
-const Assets = lazy(() => import('./assets'));
-const Donate = lazy(() => import('./donate'));
-const NotFound = lazy(() => import('./notFound'));
-const UnderConstruction = lazy(() => import('./underConstruction'));
+const Home = lazy(() => import('pages/home'));
+const Notices = lazy(() => import('pages/notices'));
+const Members = lazy(() => import('pages/members'));
+const Gachas = lazy(() => import('pages/gachas'));
+const Songs = lazy(() => import('pages/songs'));
+const Events = lazy(() => import('pages/events'));
+const Database = lazy(() => import('pages/database'));
+const Assets = lazy(() => import('pages/assets'));
+const Donate = lazy(() => import('pages/donate'));
+const NotFound = lazy(() => import('pages/notFound'));
+const UnderConstruction = lazy(() => import('pages/underConstruction'));
 
 const drawerWidth = 240;
 
@@ -123,8 +124,8 @@ const routes = [
     name: 'Songs',
     path: '/songs',
     exact: false,
-    icon: null,
-    page: null,
+    icon: <MusicNoteIcon />,
+    page: <Songs />,
   },
   {
     name: 'Events',
@@ -318,7 +319,9 @@ function Index({ window }) {
                 })
               }
               <Route path='*'>
-                <NotFound />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <NotFound />
+                </Suspense>
               </Route>
             </Switch>
 

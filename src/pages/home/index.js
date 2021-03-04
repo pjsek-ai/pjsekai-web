@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Typography,
@@ -8,13 +8,16 @@ import {
 import useSWR from "swr";
 import moment from 'moment';
 
-import BannerCarousel from '../../components/BannerCarousel';
-import Constants from '../../constants';
+import BannerCarousel from 'components/BannerCarousel';
+import Constants from 'lib/constants';
 
 function Home() {
 
+  const [now, setNow] = useState(Date.now());
+
   const { data: systemInfo } = useSWR(`${Constants.API_BASE_URL}system-info`);
   const { data: patrons } = useSWR(`${Constants.API_BASE_URL}patrons?$limit=-1`);
+  const { data: banners } = useSWR(`${Constants.API_BASE_URL}database/user/userHomeBanners?startAt[$lte]=${now}&endAt[$gte]=${now}&$sort[seq]=1`);
 
   const masters = patrons ? patrons.filter(patron => patron.Tier === "Master") : [];
   const experts = patrons ? patrons.filter(patron => patron.Tier === "Expert") : [];
@@ -22,7 +25,7 @@ function Home() {
 
   return <Grid container spacing={2}>
     <Grid item xs={12} md={6}>
-      <BannerCarousel />
+      <BannerCarousel banners={banners} />
       {systemInfo ?
         <div>
           <Typography>

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import useSWR from 'swr';
 import Carousel from 'nuka-carousel';
-import Grid from '@material-ui/core/Grid';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Paper from '@material-ui/core/Paper';
+import {
+  Grid,
+  Paper,
+  ButtonBase,
+} from '@material-ui/core';
 
-import Constants from '../constants';
+import Image from 'components/Image';
+import Constants from 'lib/constants';
 
-function BannerCarousel() {
-  const [now, setNow] = useState(Date.now());
+function BannerCarousel({ banners }) {
   const [slideIndex, setSlideIndex] = useState(0);
-
-  const { data: banners } = useSWR(`${Constants.API_BASE_URL}database/user/userHomeBanners?startAt[$lte]=${now}&endAt[$gte]=${now}&$sort[seq]=1`);
-
+  console.log(banners);
   return (
     <div style={{ maxWidth: 488 }}>
       <Carousel
@@ -26,7 +25,7 @@ function BannerCarousel() {
           const url = `${Constants.ASSET_BASE_URL}startapp/home/banner/${banner.assetbundleName}/${banner.assetbundleName}.png`;
           return (
             <div key={i}>
-              <img style={{ height: '100%', width: '100%', objectFit: 'contain' }} src={url} />
+              <Image src={url} />
             </div>
           );
         })}

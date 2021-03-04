@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from 'react-router-dom';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import AssetDirectory from '../../components/AssetDirectory';
-import AssetBreadcrumbs from '../../components/AssetBreadcrumbs';
-import AssetTree from '../../components/AssetTree';
-import AssetViewer from '../../components/AssetViewer';
+import AssetDirectory from 'components/AssetDirectory';
+import AssetBreadcrumbs from 'components/AssetBreadcrumbs';
+import AssetTree from 'components/AssetTree';
+import AssetViewer from 'components/AssetViewer';
 
 import useSWR, { mutate } from 'swr';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -15,7 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import Constants from '../../constants';
+import Constants from 'lib/constants';
 
 function Assets() {
   const sm = useMediaQuery(theme => theme.breakpoints.up('sm'));

@@ -13,7 +13,7 @@ import {
 import ReactJson from 'react-json-view';
 import { OBJModel } from 'react-3d-viewer';
 // import Viewer from 'react-viewer';
-import Constants from '../constants';
+import Constants from 'lib/constants';
 
 const getRequest = url => axios.get(url).then(r => r.data);
 

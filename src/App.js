@@ -1,6 +1,6 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import Index from "./pages/index";
+import Index from "pages/index";
 
 function App() {
   return (

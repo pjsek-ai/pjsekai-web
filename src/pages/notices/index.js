@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWR from "swr";
 
-import NoticeCard from '../../components/NoticeCard';
-import NoticeDialog from '../../components/NoticeDialog';
-import Constants from '../../constants';
+import NoticeCard from 'components/NoticeCard';
+import NoticeDialog from 'components/NoticeDialog';
+import Constants from 'lib/constants';
 
 function Notices() {
 

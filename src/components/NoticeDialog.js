@@ -10,7 +10,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import moment from 'moment';
 
-import Constants from '../constants';
+import Constants from 'lib/constants';
 
 const icons = {
   bug: "icon_failure.png",

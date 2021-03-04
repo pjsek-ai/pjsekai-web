@@ -8,28 +8,29 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import HonorMain from './HonorMain';
-import HonorSub from './HonorSub';
-import MemberThumbnail from './MemberThumbnail';
-import Constants from '../constants';
+import HonorMain from 'components/HonorMain';
+import HonorSub from 'components/HonorSub';
+import MemberThumbnail from 'components/Member/Thumbnail';
+import Image from 'components/Image';
+import Constants from 'lib/constants';
 
-function RankCard({ info }) {
-  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/cards?id=${info.userCard.cardId}`);
-  const { data: honor1Data } = useSWR(info.userProfile.honorId1 ? `${Constants.API_BASE_URL}database/master/honors?id=${info.userProfile.honorId1}` : null);
-  const { data: honor2Data } = useSWR(info.userProfile.honorId2 ? `${Constants.API_BASE_URL}database/master/honors?id=${info.userProfile.honorId2}` : null);
-  const { data: honor3Data } = useSWR(info.userProfile.honorId3 ? `${Constants.API_BASE_URL}database/master/honors?id=${info.userProfile.honorId3}` : null);
+function RankCard({ rank, honor1, honor2, honor3 }) {
+  const { data } = useSWR(`${Constants.API_BASE_URL}database/master/cards?id=${rank.userCard.cardId}`);
+  const { data: honor1Data } = useSWR(rank.userProfile.honorId1 ? `${Constants.API_BASE_URL}database/master/honors?id=${rank.userProfile.honorId1}` : null);
+  const { data: honor2Data } = useSWR(rank.userProfile.honorId2 ? `${Constants.API_BASE_URL}database/master/honors?id=${rank.userProfile.honorId2}` : null);
+  const { data: honor3Data } = useSWR(rank.userProfile.honorId3 ? `${Constants.API_BASE_URL}database/master/honors?id=${rank.userProfile.honorId3}` : null);
   return (
     <Paper style={{ padding: 8 }}>
       <Grid container>
         <Grid container direction='column' justify='center' item xs={2} sm={2} md={1}>
-          {info.rank <= 3 ?
-            <img
-              style={{ maxHeight: 100, height: '100%', width: '100%', objectFit: 'contain' }}
-              src={`/images/event/rankings/icon_rank${info.rank}.png`}
+          {rank.rank <= 3 ?
+            <Image
+              style={{ maxHeight: 100 }}
+              src={`/images/event/rankings/icon_rank${rank.rank}.png`}
             />
             :
             <Typography align='center'>
-              {info.rank}
+              {rank.rank}
             </Typography>
           }
 
@@ -38,35 +39,35 @@ function RankCard({ info }) {
           {data &&
             <MemberThumbnail
               style={{ height: '100%', width: '100%', maxHeight: 125 }}
-              info={data.data[0]}
-              trainedStars={info.userCard.specialTrainingStatus === 'done'}
-              trainedImage={info.userCard.defaultImage === 'special_training'}
-              masterRank={info.userCard.masterRank}
-              level={info.userCard.level}
+              member={data.data[0]}
+              trainedStars={rank.userCard.specialTrainingStatus === 'done'}
+              trainedImage={rank.userCard.defaultImage === 'special_training'}
+              masterRank={rank.userCard.masterRank}
+              level={rank.userCard.level}
             />
           }
         </Grid>
         <Grid container direction='column' justify='space-between' item xs={4} sm={6} md={7}>
           <div style={{ padding: 8 }}>
             <Typography >
-              {info.name}
+              {rank.name}
             </Typography>
           </div>
           <Grid container spacing={1}>
             <Grid item xs={6}>
-              <HonorMain style={{ maxHeight: 60 }} info={honor1Data ? honor1Data.data[0] : null} level={info.userProfile.honorLevel1} />
+              <HonorMain style={{ maxHeight: 60 }} honor={honor1Data ? honor1Data.data[0] : null} level={rank.userProfile.honorLevel1} />
             </Grid>
             <Grid item xs={3}>
-              <HonorSub style={{ maxHeight: 60 }} info={honor2Data ? honor2Data.data[0] : null} level={info.userProfile.honorLevel2} />
+              <HonorSub style={{ maxHeight: 60 }} honor={honor2Data ? honor2Data.data[0] : null} level={rank.userProfile.honorLevel2} />
             </Grid>
             <Grid item xs={3}>
-              <HonorSub style={{ maxHeight: 60 }} info={honor3Data ? honor3Data.data[0] : null} level={info.userProfile.honorLevel3} />
+              <HonorSub style={{ maxHeight: 60 }} honor={honor3Data ? honor3Data.data[0] : null} level={rank.userProfile.honorLevel3} />
             </Grid>
           </Grid>
         </Grid>
         <Grid container direction='column' justify='center' item xs={4} sm={2} md={2}>
           <Typography align='right'>
-            {info.score} P
+            {rank.score} P
           </Typography>
         </Grid>
       </Grid>
