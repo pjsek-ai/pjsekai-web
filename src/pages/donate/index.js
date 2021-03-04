@@ -11,7 +11,7 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-import Constants from '../../constants';
+import Constants from 'lib/constants';
 
 function Donate() {
   const { data: patrons } = useSWR(`${Constants.API_BASE_URL}patrons?$limit=-1`);

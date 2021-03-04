@@ -11,7 +11,7 @@ import ReactJson from 'react-json-view';
 import moment from 'moment';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import Constants from '../constants';
+import Constants from 'lib/constants';
 
 function JsonViewDialog({ json, onClose, open }) {
 

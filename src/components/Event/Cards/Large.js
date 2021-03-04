@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  Button,
+  Fab,
+  Typography,
+  Grid,
+  Paper,
+} from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
-import moment from 'moment';
 import GavelIcon from '@material-ui/icons/Gavel';
 
-import EventSlides from './EventSlides';
-import Constants from '../constants';
+import moment from 'moment';
+
+import Image from 'components/Image';
+import EventSlides from 'components/Event/Slides';
+import Constants from 'lib/constants';
 
 
-function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVliveClick }) {
+function EventCardLarge({ event, onChartsClick, onRankingsClick, onShopClick, onVliveClick }) {
 
   const [open, setOpen] = useState(false);
 
@@ -44,14 +46,8 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
             <Grid item xs={4}>
               {event.virtualLiveId &&
                 <CardActionArea onClick={() => onVliveClick(event)}>
-                  <LazyLoadImage
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      objectFit: 'contain',
-                    }}
+                  <Image
                     src={`${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/screen/banner/banner.png`}
-                    effect='opacity'
                   />
                 </CardActionArea>
               }
@@ -65,14 +61,8 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
             spacing={2}
           >
             <Grid item sm={4} xs={5} style={{ paddingTop: event.virtualLiveId ? '5%' : '16%', paddingBottom: '5%' }}>
-              <LazyLoadImage
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  objectFit: 'contain',
-                }}
+              <Image
                 src={`${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/logo/logo/logo.png`}
-                effect='opacity'
               />
 
             </Grid>
@@ -120,4 +110,4 @@ function EventCard({ event, onChartsClick, onRankingsClick, onShopClick, onVlive
   );
 }
 
-export default EventCard;
+export default EventCardLarge;

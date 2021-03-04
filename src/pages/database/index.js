@@ -8,8 +8,8 @@ import {
 import { Autocomplete } from '@material-ui/lab';
 import { DataGrid } from '@material-ui/data-grid';
 
-import JsonViewDialog from '../../components/JsonViewDialog';
-import Constants from '../../constants';
+import JsonViewDialog from 'components/JsonViewDialog';
+import Constants from 'lib/constants';
 
 function Database() {
   const [rowViewing, setRowViewing] = useState(null);

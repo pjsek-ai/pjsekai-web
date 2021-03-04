@@ -6,8 +6,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import RankCard from '../../components/RankCard';
-import Constants from '../../constants';
+import RankCard from 'components/RankCard';
+import Constants from 'lib/constants';
 
 function Rankings({ event }) {
   const { data, mutate } = useSWR(`${Constants.API_BASE_URL}event-rankings?eventId=${event.id}`);
@@ -25,7 +25,7 @@ function Rankings({ event }) {
       return (
         <div key={rank.rank} style={{ paddingBottom: 8 }}>
 
-          <RankCard info={rank} />
+          <RankCard rank={rank} />
 
         </div>
       );

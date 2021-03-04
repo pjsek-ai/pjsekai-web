@@ -5,21 +5,21 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import EventCardSmall from 'components/Event/Cards/Small';
+import SongCardSmall from 'components/Song/Cards/Small';
 import Constants from 'lib/constants';
 
-function EventList() {
-  const itemPerLoad = 12;
+function SongList() {
+  const itemPerLoad = 24;
 
   const history = useHistory();
 
-  const [events, setEvents] = useState({
+  const [songs, setSongs] = useState({
     skip: 0,
     limit: 0,
   });
   useEffect(async () => {
-    const response = await axios.get(`${Constants.API_BASE_URL}database/master/events?$limit=${itemPerLoad}&$sort[startAt]=-1`);
-    setEvents(response.data);
+    const response = await axios.get(`${Constants.API_BASE_URL}database/master/musics?$limit=${itemPerLoad}&&$sort[publishedAt]=-1&$sort[id]=-1`);
+    setSongs(response.data);
   }, []);
 
   return (
@@ -27,17 +27,17 @@ function EventList() {
       <InfiniteScroll
         pageStart={0}
         loadMore={async () => {
-          const response = await axios.get(`${Constants.API_BASE_URL}database/master/events?$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${events.skip + events.limit}`);
-          setEvents(prevEvents => {
-            const nextEvents = response.data;
+          const response = await axios.get(`${Constants.API_BASE_URL}database/master/musics?$limit=${itemPerLoad}&$sort[publishedAt]=-1&$sort[id]=-1&$skip=${songs.skip + songs.limit}`);
+          setSongs(prevSongs => {
+            const nextSongs = response.data;
             return {
-              ...prevEvents,
-              ...nextEvents,
-              data: [...prevEvents.data, ...nextEvents.data],
+              ...prevSongs,
+              ...nextSongs,
+              data: [...prevSongs.data, ...nextSongs.data],
             };
           })
         }}
-        hasMore={events.skip + events.limit < events.total}
+        hasMore={songs.skip + songs.limit < songs.total}
         loader={
           <div key={0}>
             <Typography align='center'>
@@ -47,16 +47,12 @@ function EventList() {
         }
       >
         <Grid container spacing={1} alignItems='center'>
-          {events.data && events.data.map(entry => {
+          {songs.data && songs.data.map(entry => {
             return (
               <Grid key={entry.id} item xs={6} md={4} xl={2}>
-                <EventCardSmall
-                  event={entry}
-                  onClick={() => {
-                    history.push(`/events/${entry.id}`);
-                  }}
-                />
-
+                <SongCardSmall song={entry} onClick={() => {
+                  history.push(`/songs/${entry.id}`);
+                }} />
               </Grid>
             );
           })}
@@ -67,4 +63,4 @@ function EventList() {
   );
 }
 
-export default EventList;
+export default SongList;

@@ -1,8 +1,10 @@
 import React from "react";
-import Typography from '@material-ui/core/Typography';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
-import Grid from "@material-ui/core/Grid";
+import {
+  Typography,
+  Grid,
+} from '@material-ui/core';
+
+import Image from 'components/Image';
 
 function NotFound() {
   return <div>
@@ -15,14 +17,11 @@ function NotFound() {
       <Typography variant="h5">
         Oh my! There's nothing here! Are you lost?
       </Typography>
-      <LazyLoadImage
+      <Image
         style={{
-          height: '100%',
-          width: '100%',
-          objectFit: 'contain',
+          maxWidth: 426,
         }}
         src='/images/confused.gif'
-        effect='opacity'
       />
     </Grid>
 

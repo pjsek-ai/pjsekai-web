@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import useSWR from 'swr';
-import Paper from '@material-ui/core/Paper';
 
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import Fab from '@material-ui/core/Fab';
+import {
+  Paper,
+  Typography,
+  Grid,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+  Fab,
+} from '@material-ui/core';
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-
-import MemberArt from '../../components/MemberArt';
-import UnderConstruction from '../underConstruction';
-import Constants from '../../constants';
+import Image from 'components/Image';
+import MemberArt from 'components/Member/Art';
+import UnderConstruction from 'pages/underConstruction';
+import Constants from 'lib/constants';
 import { Slider } from '@material-ui/core';
 
 function SingleMember() {
@@ -45,14 +47,8 @@ function SingleMember() {
         <Grid item xs={12} lg={7}>
           <Grid container>
             <Grid item xs={3}>
-              <LazyLoadImage
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  objectFit: 'contain',
-                }}
+              <Image
                 src={unitImageUrl}
-                effect='opacity'
               />
             </Grid>
             <Grid item xs>
@@ -66,26 +62,25 @@ function SingleMember() {
             {data && data.data[0].supportUnit !== 'none' &&
               <Grid item xs={3}>
                 <LazyLoadImage
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    objectFit: 'contain',
-                  }}
                   src={supportUnitImageUrl}
-                  effect='opacity'
                 />
               </Grid>
             }
           </Grid>
-          {data && rarityData && <MemberArt info={data.data[0]} trainedStars={level > rarityData.data[0].maxLevel} trainedImage={showAfterTraining} />}
+          {data && rarityData && <MemberArt member={data.data[0]} trainedStars={level > rarityData.data[0].maxLevel} trainedImage={showAfterTraining} />}
           <Grid container alignItems='center'>
             <Grid item xs={2}>
-              <Fab size='small' onClick={() => setShowAfterTraining(!showAfterTraining)}>
-                <img style={{
-                  height: '50%',
-                  width: '50%',
-                  objectFit: 'contain',
-                }} src='/images/member/icon_change_gn.png' />
+              <Fab
+                size='small'
+                onClick={() => setShowAfterTraining(!showAfterTraining)}
+              >
+                <Image
+                  style={{
+                    height: '50%',
+                    width: '50%',
+                  }}
+                  src='/images/member/icon_change_gn.png'
+                />
               </Fab>
             </Grid>
             {/* <Grid item xs={5}>

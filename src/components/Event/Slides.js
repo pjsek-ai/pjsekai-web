@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  Dialog,
+  DialogContent,
+  IconButton,
+  Grid,
+  Paper,
+  ButtonBase,
+  Button,
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Carousel from 'nuka-carousel';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Button from '@material-ui/core/Button';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-import Constants from '../constants';
+import Image from 'components/Image';
+import Constants from 'lib/constants';
 
 function EventSlides({ event, open, onClose }) {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -47,14 +48,8 @@ function EventSlides({ event, open, onClose }) {
           <Grid container item justify="flex-start" xs={1}>
             {slideIndex > 0 &&
               < ButtonBase onClick={() => setSlideIndex(slideIndex - 1)}>
-                <LazyLoadImage
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    objectFit: 'contain',
-                  }}
+                <Image
                   src='/images/event/arrow_switching_left.png'
-                  effect='opacity'
                 />
               </ButtonBase>
             }
@@ -73,9 +68,9 @@ function EventSlides({ event, open, onClose }) {
                   const url = `${Constants.ASSET_BASE_URL}ondemand/event/${event.assetbundleName}/slide/top/event_${`${i}`.padStart(2, '0')}.png`;
                   return (
                     <div key={i} style={{ borderRadius: 48, padding: 24, paddingBottom: 16, backgroundColor: '#ffffff' }}>
-                      <img
+                      <Image
                         onLoad={() => carousel.current.setDimensions()}
-                        style={{ borderRadius: 24, width: '100%', height: '100%', objectFit: 'contain' }}
+                        style={{ borderRadius: 24 }}
                         src={url}
                       />
                     </div>
@@ -154,14 +149,8 @@ function EventSlides({ event, open, onClose }) {
           <Grid container justify="flex-end" item xs={1}>
             {slideIndex < 3 &&
               <ButtonBase onClick={() => setSlideIndex(slideIndex + 1)}>
-                <LazyLoadImage
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    objectFit: 'contain',
-                  }}
+                <Image
                   src='/images/event/arrow_switching_right.png'
-                  effect='opacity'
                 />
               </ButtonBase>
             }

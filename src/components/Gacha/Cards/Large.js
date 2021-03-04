@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
+import React from 'react';
+import {
+  Typography,
+  Paper,
+} from '@material-ui/core';
 import moment from 'moment';
 import ReactPlayer from 'react-player';
 
-import Constants from '../constants';
+import Image from 'components/Image';
+import Constants from 'lib/constants';
 
-
-function GachaCard({ gacha }) {
+function GachaCardLarge({ gacha }) {
   return (
     <div style={{
       position: 'relative',
@@ -52,26 +50,14 @@ function GachaCard({ gacha }) {
         </div>
 
         <div style={{ position: 'absolute', bottom: -6, left: -8 }}>
-          <LazyLoadImage
-            style={{
-              height: '100%',
-              width: '100%',
-              objectFit: 'contain',
-            }}
+          <Image
             src={`${Constants.ASSET_BASE_URL}ondemand/gacha/${gacha.assetbundleName}/screen/texture/img_gacha${gacha.id}.png`}
-            effect='opacity'
           />
         </div>
 
         <div style={{ position: 'absolute', bottom: 8, left: 8, width: '30%', height: '40%' }}>
-          <LazyLoadImage
-            style={{
-              height: '100%',
-              width: '100%',
-              objectFit: 'contain',
-            }}
+          <Image
             src={`${Constants.ASSET_BASE_URL}ondemand/gacha/${gacha.assetbundleName}/logo/logo.png`}
-            effect='opacity'
           />
         </div>
 
@@ -121,4 +107,4 @@ function GachaCard({ gacha }) {
   );
 }
 
-export default GachaCard;
+export default GachaCardLarge;

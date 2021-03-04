@@ -3,16 +3,15 @@ import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import useSWR from "swr";
 import { useHistory } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Fab from '@material-ui/core/Fab';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
+import {
+  Grid,
+  Fab,
+  Typography,
+} from '@material-ui/core';
 
-import MemberThumbnail from '../../components/MemberThumbnail';
-import Constants from '../../constants';
+import Image from 'components/Image';
+import MemberCardSmall from 'components/Member/Cards/Small';
+import Constants from 'lib/constants';
 
 function MemberList() {
   const itemPerLoad = 36;
@@ -58,40 +57,34 @@ function MemberList() {
           {cards.data && cards.data.map(entry => {
             return (
               <Grid key={entry.id} item xs={3} md={2} xl={1} style={{ maxWidth: 192 }}>
-                <div style={{ paddingTop: '100%', position: 'relative' }}>
-                  <Paper style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, overflow: 'hidden', borderRadius: '5.13%' }}>
-                    <ButtonBase
-                      style={{ height: '100%', width: '100%' }}
-                      onClick={() => {
-                        history.push(`/members/${entry.id}`);
-                      }}
-                    >
-                      <MemberThumbnail
-                        style={{ height: '100%', width: '100%' }}
-                        info={entry}
-                        trainedStars={showAfterTraining}
-                        trainedImage={showAfterTraining}
-                      />
-                    </ButtonBase>
-                  </Paper>
-                </div>
-
+                <MemberCardSmall
+                  member={entry}
+                  showAfterTraining={showAfterTraining}
+                  onClick={() => {
+                    history.push(`/members/${entry.id}`);
+                  }}
+                />
               </Grid>
             );
           })}
         </Grid>
         <div style={{ height: 16 }} />
       </InfiniteScroll>
-      <Fab style={{
-        position: 'fixed',
-        bottom: 16,
-        right: 16,
-      }} onClick={() => setShowAfterTraining(prevShowAfterTraining => !prevShowAfterTraining)}>
-        <img style={{
-          height: '50%',
-          width: '50%',
-          objectFit: 'contain',
-        }} src='/images/member/icon_change_gn.png' />
+      <Fab
+        style={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+        }}
+        onClick={() => setShowAfterTraining(prevShowAfterTraining => !prevShowAfterTraining)}
+      >
+        <Image
+          style={{
+            height: '50%',
+            width: '50%',
+          }}
+          src='/images/member/icon_change_gn.png'
+        />
       </Fab>
     </div >
   );
