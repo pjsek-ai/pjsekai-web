@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useHistory } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import {
+  Typography,
+  Grid,
+} from '@material-ui/core';
 
 import EventCardSmall from 'components/Event/Cards/Small';
 import Constants from 'lib/constants';

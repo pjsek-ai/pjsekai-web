@@ -15,6 +15,7 @@ import Image from 'components/Image';
 import Constants from 'lib/constants';
 
 function RankCard({ rank, honor1, honor2, honor3 }) {
+  // TODO move API calls outside
   const { data } = useSWR(`${Constants.API_BASE_URL}database/master/cards?id=${rank.userCard.cardId}`);
   const { data: honor1Data } = useSWR(rank.userProfile.honorId1 ? `${Constants.API_BASE_URL}database/master/honors?id=${rank.userProfile.honorId1}` : null);
   const { data: honor2Data } = useSWR(rank.userProfile.honorId2 ? `${Constants.API_BASE_URL}database/master/honors?id=${rank.userProfile.honorId2}` : null);
