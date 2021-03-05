@@ -11,7 +11,6 @@ import Constants from 'lib/constants';
 
 function BannerCarousel({ banners }) {
   const [slideIndex, setSlideIndex] = useState(0);
-  console.log(banners);
   return (
     <div style={{ maxWidth: 488 }}>
       <Carousel
