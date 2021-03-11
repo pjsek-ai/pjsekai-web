@@ -31,8 +31,10 @@
     "react-scripts": "4.0.1",
     "react-slick": "^0.27.13",
     "slick-carousel": "^1.8.1",
+    "sus-analyzer": "^2.2.4",
     "swr": "^0.3.11",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "xmlbuilder2": "^2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
