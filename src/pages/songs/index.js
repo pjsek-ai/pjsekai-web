@@ -19,7 +19,7 @@ function Cards() {
             <SongList />
           </Route>
           <Route path={`${path}/:musicId`}>
-            <UnderConstruction />
+            <SongPage />
           </Route>
         </Switch>
       </Suspense>

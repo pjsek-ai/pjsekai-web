@@ -17,7 +17,7 @@ function MemberThumbnail({ member, trainedStars, trainedImage, masterRank = 0, l
   const normalStarUrl = `/images/member/rarity_star_normal.png`;
   const afterTrainingStarUrl = `/images/member/rarity_star_afterTraining.png`;
   const masterRankUrl = `/images/member/masterRank_L_${masterRank}.png`;
-
+  // TODO image fallback
   return (
     <svg {...props} viewBox='0 0 156 156'>
       <ImageSVG onError={(e) => {
