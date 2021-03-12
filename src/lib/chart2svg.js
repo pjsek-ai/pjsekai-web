@@ -1,5 +1,6 @@
 const SusAnalyzer = require('sus-analyzer');
 const xmlbuilder = require('xmlbuilder2');
+const { Bezier } = require("bezier-js");
 
 const chart2svg = (chartString, assetsPath) => {
 
@@ -30,11 +31,10 @@ const chart2svg = (chartString, assetsPath) => {
 
   const svgWidth = leftMargin + laneWidth * 12 + rightMargin;
 
-  // TODO: potential issue, does curviness increase for longer notes?
-  const curveEaseInRatio = 0.5; // TODO: need a slight increase (fix diamond interpolation)
-  const curveEaseOutRatio = 0.5; // TODO: need a slight increase (fix diamond interpolation)
+  const curveEaseInRatio = 0.5;
+  const curveEaseOutRatio = 0.5;
   const straightEaseInRatio = 0;
-  const straightEaseOutRatio = 0.25;
+  const straightEaseOutRatio = 0;
 
   const getPositionKey = note => `M${note.measure}T${note.tick}L${note.lane}W${note.width}`;
   const drawNote = (group, type, measure, tick, lane, width) => {
@@ -148,9 +148,7 @@ const chart2svg = (chartString, assetsPath) => {
     const easeOutRatio = easeOut ? curveEaseOutRatio : (easeIn ? 0 : straightEaseOutRatio);
 
     const d = `M${fromLeftX},${fromY}C${fromLeftX},${fromY - (fromY - toY) * easeInRatio},${toLeftX},${toY + (fromY - toY) * easeOutRatio},${toLeftX},${toY},H${toRightX}C${toRightX},${toY + (fromY - toY) * easeOutRatio},${fromRightX},${fromY - (fromY - toY) * easeInRatio},${fromRightX},${fromY}z`;
-    // const d = easeIn ?
-    //   `M${fromLeftX},${fromY}Q${fromLeftX},${fromY - (fromY - toY) * easeInRatio},${toLeftX},${toY},H${toRightX}Q${fromRightX},${fromY - (fromY - toY) * easeInRatio},${fromRightX},${fromY}z` :
-    //   `M${fromLeftX},${fromY}Q${toLeftX},${toY + (fromY - toY) * easeOutRatio},${toLeftX},${toY},H${toRightX}Q${toRightX},${toY + (fromY - toY) * easeOutRatio},${fromRightX},${fromY}z`;
+
     group.ele('path', {
       // stroke: '#FFFFFFF0',
       // 'stroke-width': 2,
@@ -169,43 +167,24 @@ const chart2svg = (chartString, assetsPath) => {
   };
   const drawInterpolatedDiamond = (group, measure, tick, fromMeasure, fromTick, fromLane, fromWidth, toMeasure, toTick, toLane, toWidth, easeIn, easeOut, critical = false) => {
     const diamondWidth = laneWidth * 1.5;
-    const fromLeftX = laneLefts[fromLane];
-    const fromRightX = laneLefts[fromLane] + laneWidth * fromWidth;
-    const fromY = measureBottoms[fromMeasure] - fromTick / ticksPerBeat * pixelsPerBeat;
-    const toLeftX = laneLefts[toLane];
-    const toRightX = laneLefts[toLane] + laneWidth * toWidth;
-    const toY = measureBottoms[toMeasure] - toTick / ticksPerBeat * pixelsPerBeat;
+    const shrinkWidth = laneWidth / 16;
+    const fromLeftX = Math.ceil(laneLefts[fromLane] + shrinkWidth);
+    const fromRightX = Math.floor(laneLefts[fromLane] + laneWidth * fromWidth - shrinkWidth);
+    const fromY = Math.floor(measureBottoms[fromMeasure] - fromTick / ticksPerBeat * pixelsPerBeat);
+    const toLeftX = Math.ceil(laneLefts[toLane] + shrinkWidth);
+    const toRightX = Math.floor(laneLefts[toLane] + laneWidth * toWidth - shrinkWidth);
+    const toY = Math.floor(measureBottoms[toMeasure] - toTick / ticksPerBeat * pixelsPerBeat);
+    const easeInRatio = easeIn ? curveEaseInRatio : (easeIn ? 0 : straightEaseInRatio);
+    const easeOutRatio = easeOut ? curveEaseOutRatio : (easeIn ? 0 : straightEaseOutRatio);
     const y = measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeat;
     let leftX, rightX;
 
-    // const t = (y-fromY)/(3*toY-3*fromY)
-    // const x = fromLeftX
-    // fromLeftX, fromY -- toLeftX, toY + (fromY - toY) * easeInRatio -- toLeftX, toY // ease-out
-    // fromLeftX, fromY -- fromLeftX, fromY - (fromY - toY) * easeOutRatio -- toLeftX, toY // ease-in
+    const leftBezier = new Bezier(fromLeftX, fromY, fromLeftX, fromY - (fromY - toY) * easeInRatio, toLeftX, toY + (fromY - toY) * easeOutRatio, toLeftX, toY);
+    const rightBezier = new Bezier(fromRightX, fromY, fromRightX, fromY - (fromY - toY) * easeInRatio, toRightX, toY + (fromY - toY) * easeOutRatio, toRightX, toY);
 
-    if (easeIn && easeOut) {
-      leftX = fromLeftX - (fromY - y) / (fromY - toY) * (fromLeftX - toLeftX); // linear
-      rightX = fromRightX - (fromY - y) / (fromY - toY) * (fromRightX - toRightX); // linear
-    }
-    else if (easeIn) {
-      const t = (y - fromY) / (toY - fromY);
-      leftX = (fromLeftX - 2 * fromLeftX + toLeftX) * t * t + fromLeftX;
-      rightX = (fromRightX - 2 * fromRightX + toRightX) * t * t + fromRightX;
-    }
-    else if (easeOut) {
-      const t = (y - fromY) / (toY - fromY);
-      leftX = (fromLeftX - 2 * toLeftX + toLeftX) * t * t + (-2 * fromLeftX + 2 * toLeftX) * t + fromLeftX;
-      rightX = (fromRightX - 2 * toRightX + toRightX) * t * t + (-2 * fromRightX + 2 * toRightX) * t + fromRightX;
-    }
-    else {
-      const y1 = toY + (fromY - toY) * straightEaseOutRatio;
-      const a = fromY - 2 * y1 + toY;
-      const b = -2 * fromY + 2 * y1;
-      const c = fromY - y;
-      const t = ((b > 0 ? 1 : -1) * Math.sqrt(b * b - 4 * a * c) - b) / 2 / a;
-      leftX = (fromLeftX - 2 * toLeftX + toLeftX) * t * t + (-2 * fromLeftX + 2 * toLeftX) * t + fromLeftX;
-      rightX = (fromRightX - 2 * toRightX + toRightX) * t * t + (-2 * fromRightX + 2 * toRightX) * t + fromRightX;
-    }
+    leftX = Math.ceil(leftBezier.get(leftBezier.intersects({ p1: { x: 0, y: y }, p2: { x: svgWidth, y: y } })[0]).x);
+    rightX = Math.floor(rightBezier.get(rightBezier.intersects({ p1: { x: 0, y: y }, p2: { x: svgWidth, y: y } })[0]).x);
+
     group.ele('image', {
       href: `${assetsPath}/notes_long_among${critical ? '_crtcl' : ''}.png`,
       x: (leftX + rightX) / 2 - diamondWidth / 2,
@@ -300,6 +279,7 @@ const chart2svg = (chartString, assetsPath) => {
 
   backgroundGroup.ele('rect', {
     fill: '#00304030',
+    // fill: '#000000FF',
     width: laneWidth * 12,
     height: svgHeight,
     x: leftMargin,
@@ -390,28 +370,28 @@ const chart2svg = (chartString, assetsPath) => {
         return [...acc, { start: cur, easeIn: key in slideEaseInModifiers, easeOut: key in slideEaseOutModifiers, pathless: [] }]
       }
     }, []);
-    paths = paths.reduce((acc, cur) => {
-      if (acc.length > 0) {
-        const pathStart = acc[acc.length - 1].start;
-        const pathMid = cur.start;
-        const pathEnd = cur.end;
-        if (!acc[acc.length - 1].easeIn &&
-          !acc[acc.length - 1].easeOut &&
-          !cur.easeIn &&
-          !cur.easeOut &&
-          (pathMid.tick - pathStart.tick) / (pathMid.lane - pathStart.lane) === (pathEnd.tick - pathMid.tick) / (pathEnd.lane - pathMid.lane) &&
-          (pathMid.tick - pathStart.tick) / (pathMid.lane + pathMid.width - pathStart.lane + pathStart.width) === (pathEnd.tick - pathMid.tick) / (pathEnd.lane + pathEnd.width - pathMid.lane + pathMid.width)) {
-          acc[acc.length - 1].end = pathEnd;
-          if (cur.start.noteType === 3) {
-            acc[acc.length - 1].pathless = [...acc[acc.length - 1].pathless, pathMid];
-          }
-          return acc;
-        } else {
-          return [...acc, cur];
-        }
-      }
-      return [cur];
-    }, []);
+    // paths = paths.reduce((acc, cur) => {
+    //   if (acc.length > 0) {
+    //     const pathStart = acc[acc.length - 1].start;
+    //     const pathMid = cur.start;
+    //     const pathEnd = cur.end;
+    //     if (!acc[acc.length - 1].easeIn &&
+    //       !acc[acc.length - 1].easeOut &&
+    //       !cur.easeIn &&
+    //       !cur.easeOut &&
+    //       (pathMid.tick - pathStart.tick) / (pathMid.lane - pathStart.lane) === (pathEnd.tick - pathMid.tick) / (pathEnd.lane - pathMid.lane) &&
+    //       (pathMid.tick - pathStart.tick) / (pathMid.lane + pathMid.width - pathStart.lane + pathStart.width) === (pathEnd.tick - pathMid.tick) / (pathEnd.lane + pathEnd.width - pathMid.lane + pathMid.width)) {
+    //       acc[acc.length - 1].end = pathEnd;
+    //       if (cur.start.noteType === 3) {
+    //         acc[acc.length - 1].pathless = [...acc[acc.length - 1].pathless, pathMid];
+    //       }
+    //       return acc;
+    //     } else {
+    //       return [...acc, cur];
+    //     }
+    //   }
+    //   return [cur];
+    // }, []);
     paths.forEach(path => {
       drawSlidePath(pathGroup, path.start.measure, path.start.tick, path.start.lane - 2, path.start.width, path.end.measure, path.end.tick, path.end.lane - 2, path.end.width, path.easeIn, path.easeOut, startKey in criticals);
       if (path.start.noteType === 3) {
