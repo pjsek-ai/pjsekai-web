@@ -18,27 +18,36 @@ function EventList() {
   const [events, setEvents] = useState({
     skip: 0,
     limit: 0,
+    data: [],
   });
-  useEffect(async () => {
-    const response = await axios.get(`${Constants.API_BASE_URL}database/master/events?$limit=${itemPerLoad}&$sort[startAt]=-1`);
-    setEvents(response.data);
+
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const loadMore = async () => {
+    if (!loadingMore) {
+      await setLoadingMore(true);
+      const response = await axios.get(`${Constants.API_BASE_URL}database/master/events?$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${events.skip + events.limit}`);
+      await setEvents(prevEvents => {
+        const nextEvents = response.data;
+        return {
+          ...prevEvents,
+          ...nextEvents,
+          data: [...prevEvents.data, ...nextEvents.data],
+        };
+      });
+      await setLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
+    loadMore();
   }, []);
 
   return (
     <div>
       <InfiniteScroll
         pageStart={0}
-        loadMore={async () => {
-          const response = await axios.get(`${Constants.API_BASE_URL}database/master/events?$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${events.skip + events.limit}`);
-          setEvents(prevEvents => {
-            const nextEvents = response.data;
-            return {
-              ...prevEvents,
-              ...nextEvents,
-              data: [...prevEvents.data, ...nextEvents.data],
-            };
-          })
-        }}
+        loadMore={loadMore}
         hasMore={events.skip + events.limit < events.total}
         loader={
           <div key={0}>

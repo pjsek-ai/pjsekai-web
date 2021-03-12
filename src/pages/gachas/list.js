@@ -18,27 +18,36 @@ function GachaList() {
   const [gachas, setGachas] = useState({
     skip: 0,
     limit: 0,
+    data: [],
   });
-  useEffect(async () => {
-    const response = await axios.get(`${Constants.API_BASE_URL}database/master/gachas?$limit=${itemPerLoad}&&$sort[startAt]=-1`);
-    setGachas(response.data);
+
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const loadMore = async () => {
+    if (!loadingMore) {
+      await setLoadingMore(true);
+      const response = await axios.get(`${Constants.API_BASE_URL}database/master/gachas?$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${gachas.skip + gachas.limit}`);
+      await setGachas(prevGachas => {
+        const nextGachas = response.data;
+        return {
+          ...prevGachas,
+          ...nextGachas,
+          data: [...prevGachas.data, ...nextGachas.data],
+        };
+      });
+      await setLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
+    loadMore();
   }, []);
 
   return (
     <div>
       <InfiniteScroll
         pageStart={0}
-        loadMore={async () => {
-          const response = await axios.get(`${Constants.API_BASE_URL}database/master/gachas?$limit=${itemPerLoad}&$sort[startAt]=-1&$skip=${gachas.skip + gachas.limit}`);
-          setGachas(prevGachas => {
-            const nextGachas = response.data;
-            return {
-              ...prevGachas,
-              ...nextGachas,
-              data: [...prevGachas.data, ...nextGachas.data],
-            };
-          })
-        }}
+        loadMore={loadMore}
         hasMore={gachas.skip + gachas.limit < gachas.total}
         loader={
           <div key={0}>

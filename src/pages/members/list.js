@@ -22,10 +22,30 @@ function MemberList() {
   const [cards, setCards] = useState({
     skip: 0,
     limit: 0,
+    data: [],
   });
-  useEffect(async () => {
-    const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&&$sort[seq]=-1`);
-    setCards(response.data);
+
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const loadMore = async () => {
+    if (!loadingMore) {
+      await setLoadingMore(true);
+      const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&$sort[seq]=-1&$skip=${cards.skip + cards.limit}`);
+      await setCards(prevCards => {
+        const nextCards = response.data;
+        return {
+          ...prevCards,
+          ...nextCards,
+          data: [...prevCards.data, ...nextCards.data],
+        };
+      });
+      await setLoadingMore(false);
+    }
+
+  }
+
+  useEffect(() => {
+    loadMore();
   }, []);
 
   // const { data, mutate } = useSWR(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&&$sort[id]=-1`);
@@ -33,17 +53,7 @@ function MemberList() {
     <div>
       <InfiniteScroll
         pageStart={0}
-        loadMore={async () => {
-          const response = await axios.get(`${Constants.API_BASE_URL}database/master/cards?$limit=${itemPerLoad}&$sort[seq]=-1&$skip=${cards.skip + cards.limit}`);
-          setCards(prevCards => {
-            const nextCards = response.data;
-            return {
-              ...prevCards,
-              ...nextCards,
-              data: [...prevCards.data, ...nextCards.data],
-            };
-          })
-        }}
+        loadMore={loadMore}
         hasMore={cards.skip + cards.limit < cards.total}
         loader={
           <div key={0}>
