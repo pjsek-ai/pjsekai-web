@@ -147,7 +147,7 @@ const chart2svg = (chartString, assetsPath) => {
     const easeInRatio = easeIn ? curveEaseInRatio : (easeIn ? 0 : straightEaseInRatio);
     const easeOutRatio = easeOut ? curveEaseOutRatio : (easeIn ? 0 : straightEaseOutRatio);
 
-    const d = `M${fromLeftX},${fromY}C${fromLeftX},${fromY - (fromY - toY) * easeInRatio},${toLeftX},${toY + (fromY - toY) * easeOutRatio},${toLeftX},${toY},H${toRightX}C${toRightX},${toY + (fromY - toY) * easeOutRatio},${fromRightX},${fromY - (fromY - toY) * easeInRatio},${fromRightX},${fromY}z`;
+    const d = `M${fromLeftX},${fromY}C${fromLeftX},${fromY - (fromY - toY) * easeInRatio},${toLeftX},${toY + (fromY - toY) * easeOutRatio},${toLeftX},${toY}H${toRightX}C${toRightX},${toY + (fromY - toY) * easeOutRatio},${fromRightX},${fromY - (fromY - toY) * easeInRatio},${fromRightX},${fromY}z`;
 
     group.ele('path', {
       // stroke: '#FFFFFFF0',
