@@ -7,11 +7,12 @@ const chart2svg = (chartString, assetsPath) => {
   const ticksPerBeat = 480;
   const susData = SusAnalyzer.getScore(chartString, ticksPerBeat);
 
-  const pixelsPerBeat = 100; // TODO: scale by defining full height (maybe? how about bpm changes?)
-  const topMargin = Math.ceil(pixelsPerBeat / 8);
-  const bottomMargin = Math.ceil(pixelsPerBeat / 8);
-  const leftMargin = Math.ceil(pixelsPerBeat / 8);
-  const rightMargin = Math.ceil(pixelsPerBeat / 8);
+  const basePixelsPerBeat = 100; // TODO: scale by defining full height (maybe?)
+  
+  const topMargin = Math.ceil(basePixelsPerBeat / 8);
+  const bottomMargin = Math.ceil(basePixelsPerBeat / 8);
+  const leftMargin = Math.ceil(basePixelsPerBeat / 8);
+  const rightMargin = Math.ceil(basePixelsPerBeat / 8);
   const bpmCounts = susData.BPMs.reduce((acc, cur) => {
     const newCount = (acc.counts[cur] || 0) + 1;
     if (newCount > acc.max) {
@@ -21,12 +22,13 @@ const chart2svg = (chartString, assetsPath) => {
     acc.counts[cur] = newCount;
     return acc;
   }, { counts: {}, max: 0 });
-  const measureHeights = susData.BEATs.map((numberOfBeats, i) => numberOfBeats * pixelsPerBeat / bpmCounts.mostFrequent * susData.BPMs[i]);
+  const pixelsPerBeats = susData.BPMs.map(bpm=>basePixelsPerBeat / bpmCounts.mostFrequent * bpm)
+  const measureHeights = susData.BEATs.map((numberOfBeats, i) => numberOfBeats * pixelsPerBeats[i]);
   const measureBottoms = measureHeights.reverse().reduce((acc, cur, i) => [...acc, acc[i] + cur], [topMargin]).reverse();
   const svgHeight = measureBottoms[0] + bottomMargin;
 
   const beatWidthRatio = 0.8; // TODO: scale by defining full width
-  const laneWidth = Math.ceil(pixelsPerBeat * beatWidthRatio / 12);
+  const laneWidth = Math.ceil(basePixelsPerBeat * beatWidthRatio / 12);
   const laneLefts = [...Array(13)].map((_, i) => i * laneWidth + leftMargin);
 
   const svgWidth = leftMargin + laneWidth * 12 + rightMargin;
@@ -39,7 +41,7 @@ const chart2svg = (chartString, assetsPath) => {
   const getPositionKey = note => `M${note.measure}T${note.tick}L${note.lane}W${note.width}`;
   const drawNote = (group, type, measure, tick, lane, width) => {
     const scale = laneWidth * 3 / (354 - 48 - 48);
-    const y = measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeat - (type === 'long' ? 54 : 53) * scale - 36 * scale;
+    const y = measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeats[measure] - (type === 'long' ? 54 : 53) * scale - 36 * scale;
     const height = 186 * scale;
     const noteSideMargin = Math.ceil(48 * scale);
     const noteEndWidth = Math.ceil(91 * scale);
@@ -132,7 +134,7 @@ const chart2svg = (chartString, assetsPath) => {
     group.ele('image', {
       href,
       x: laneLefts[lane] + width / 2 * laneWidth - arrowWidth / 2 + (left ? -laneWidth / 4 : (right ? laneWidth / 4 : 0)),
-      y: measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeat - flickArrowSize.height * scale - pixelsPerBeat / 32,
+      y: measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeats[measure] - flickArrowSize.height * scale - basePixelsPerBeat / 32,
       width: arrowWidth,
     });
   };
@@ -140,10 +142,10 @@ const chart2svg = (chartString, assetsPath) => {
     const shrinkWidth = laneWidth / 16;
     const fromLeftX = Math.ceil(laneLefts[fromLane] + shrinkWidth);
     const fromRightX = Math.floor(laneLefts[fromLane] + laneWidth * fromWidth - shrinkWidth);
-    const fromY = Math.floor(measureBottoms[fromMeasure] - fromTick / ticksPerBeat * pixelsPerBeat);
+    const fromY = Math.floor(measureBottoms[fromMeasure] - fromTick / ticksPerBeat * pixelsPerBeats[fromMeasure]);
     const toLeftX = Math.ceil(laneLefts[toLane] + shrinkWidth);
     const toRightX = Math.floor(laneLefts[toLane] + laneWidth * toWidth - shrinkWidth);
-    const toY = Math.floor(measureBottoms[toMeasure] - toTick / ticksPerBeat * pixelsPerBeat);
+    const toY = Math.floor(measureBottoms[toMeasure] - toTick / ticksPerBeat * pixelsPerBeats[toMeasure]);
     const easeInRatio = easeIn ? curveEaseInRatio : (easeIn ? 0 : straightEaseInRatio);
     const easeOutRatio = easeOut ? curveEaseOutRatio : (easeIn ? 0 : straightEaseOutRatio);
 
@@ -161,7 +163,7 @@ const chart2svg = (chartString, assetsPath) => {
     group.ele('image', {
       href: `${assetsPath}/notes_long_among${critical ? '_crtcl' : ''}.png`,
       x: laneLefts[lane] + laneWidth * width / 2 - diamondWidth / 2,
-      y: measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeat - diamondWidth / 2,
+      y: measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeats[measure] - diamondWidth / 2,
       width: diamondWidth,
     });
   };
@@ -170,13 +172,13 @@ const chart2svg = (chartString, assetsPath) => {
     const shrinkWidth = laneWidth / 16;
     const fromLeftX = Math.ceil(laneLefts[fromLane] + shrinkWidth);
     const fromRightX = Math.floor(laneLefts[fromLane] + laneWidth * fromWidth - shrinkWidth);
-    const fromY = Math.floor(measureBottoms[fromMeasure] - fromTick / ticksPerBeat * pixelsPerBeat);
+    const fromY = Math.floor(measureBottoms[fromMeasure] - fromTick / ticksPerBeat * pixelsPerBeats[fromMeasure]);
     const toLeftX = Math.ceil(laneLefts[toLane] + shrinkWidth);
     const toRightX = Math.floor(laneLefts[toLane] + laneWidth * toWidth - shrinkWidth);
-    const toY = Math.floor(measureBottoms[toMeasure] - toTick / ticksPerBeat * pixelsPerBeat);
+    const toY = Math.floor(measureBottoms[toMeasure] - toTick / ticksPerBeat * pixelsPerBeats[toMeasure]);
     const easeInRatio = easeIn ? curveEaseInRatio : (easeIn ? 0 : straightEaseInRatio);
     const easeOutRatio = easeOut ? curveEaseOutRatio : (easeIn ? 0 : straightEaseOutRatio);
-    const y = measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeat;
+    const y = measureBottoms[measure] - tick / ticksPerBeat * pixelsPerBeats[measure];
     let leftX, rightX;
 
     const leftBezier = new Bezier(fromLeftX, fromY, fromLeftX, fromY - (fromY - toY) * easeInRatio, toLeftX, toY + (fromY - toY) * easeOutRatio, toLeftX, toY);
@@ -308,7 +310,7 @@ const chart2svg = (chartString, assetsPath) => {
   });
   susData.BEATs.forEach((measureBeat, measure) => {
     [...Array(measureBeat)].map((_, i) => i).slice(1).forEach(beat => {
-      const y = measureBottoms[measure] - pixelsPerBeat * beat;
+      const y = measureBottoms[measure] - pixelsPerBeats[measure] * beat;
       beatLinesGroup.ele('line', {
         stroke: '#FFFFFF80',
         'stroke-width': 2,
