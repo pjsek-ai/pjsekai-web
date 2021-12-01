@@ -45,7 +45,7 @@ function Assets() {
   };
 
   const cache = async path => {
-    const directoryData = await fetch(`${Constants.API_BASE_URL}assets?parent=${path}&$limit=1000&$sort[isDir]=-1&$sort[path]=1`).then(res => res.json());
+    const directoryData = await fetch(`${Constants.API_BASE_URL}assets?parent=${path}&$limit=10000&$sort[isDir]=-1&$sort[path]=1`).then(res => res.json());
     setDirectoryCache(prevDirectoryCache => ({ ...prevDirectoryCache, [path]: directoryData }));
     return directoryData;
   }
