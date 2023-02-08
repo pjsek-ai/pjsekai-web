@@ -400,13 +400,15 @@ const chart2svg = (chartString, assetsPath) => {
         drawWaypointDiamond(diamondGroup, path.start.measure, path.start.tick, path.start.lane - 2, path.start.width, startKey in criticals);
       }
       path.pathless.forEach(pathless => {
-        drawInterpolatedDiamond(
-          diamondGroup,
-          pathless.measure, pathless.tick,
-          path.start.measure, path.start.tick, path.start.lane - 2, path.start.width,
-          path.end.measure, path.end.tick, path.end.lane - 2, path.end.width,
-          path.easeIn, path.easeOut, startKey in criticals
-        );
+        if (path.start.noteType === 3) {
+          drawInterpolatedDiamond(
+            diamondGroup,
+            pathless.measure, pathless.tick,
+            path.start.measure, path.start.tick, path.start.lane - 2, path.start.width,
+            path.end.measure, path.end.tick, path.end.lane - 2, path.end.width,
+            path.easeIn, path.easeOut, startKey in criticals
+          );
+        }
       });
     });
 
